@@ -10,7 +10,6 @@ export default function CommandsPage() {
 		).then(
 			data => {
 				setData(data)
-				console.log(data)
 			}
 		)
 	}, [])
