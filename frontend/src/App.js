@@ -1,29 +1,21 @@
-import React, {useState, useEffect} from 'react'
+import React from 'react'
+import Navbar from './common/navbar'
+import HomePage from './home/homePage'
+import CommandsPage from './commands/commandsPage'
+import ChangelogPage from './changelog/changelogPage'
+import SetupPage from './setup/setupPage'
+import { Route, Routes } from "react-router-dom"
 
 function App() {
-	
-	const[data, setData] = useState([{}])
-	
-	useEffect(() => {
-		fetch("/commands").then(
-			res => res.json()
-		).then(
-			data => {
-				setData(data)
-				console.log(data)
-			}
-		)
-	}, [])
-	
 	return (
 		<div>
-		{(typeof data.commands === 'undefined') ? (
-			<p>Loading...</p>
-		): (
-			data.commands.map((command, i) => (
-				<p key={i}>{command}</p>
-			))
-		)}
+		    <Navbar/>
+            <Routes>
+                <Route path="/" element={<HomePage/>}/>
+                <Route path="/commands" element={<CommandsPage/>}/>
+                <Route path="/changelog" element={<ChangelogPage/>}/>
+                <Route path="/setup" element={<SetupPage/>}/>
+            </Routes>
 		</div>
 	)
 }
