@@ -21,7 +21,7 @@ def commands():
             "description": cmd[2]
         }
 
-    return json.dumps(jsondict)
+    return json.dumps({"commands": jsondict})
 
 
 @app.route("/changelogs")
