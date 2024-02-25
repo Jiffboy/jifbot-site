@@ -11,7 +11,6 @@ export default function CommandsPage() {
 		).then(
 			data => {
 				setCommands(data)
-				console.log(data)
 			}
 		)
 	}, [])

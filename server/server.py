@@ -47,7 +47,8 @@ def changelogs():
         currList.append(changelog[1])
     jsondict[currDate] = currList
 
-    return json.dumps(jsondict)
-    
+    return json.dumps({"changelogs": jsondict})
+
+
 if __name__ == "__main__":
    app.run(debug=True)
