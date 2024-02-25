@@ -11,6 +11,7 @@ export default function CommandsPage() {
 		).then(
 			data => {
 				setCommands(data)
+				console.log(data)
 			}
 		)
 	}, [])
@@ -23,7 +24,13 @@ export default function CommandsPage() {
                 Object.entries(commands.commands).map(([key, arr]) =>
                     <Command name={key}
                     category={arr.category}
-                    description={arr.description}/>
+                    description={arr.description}
+                    parameters={
+                        (typeof arr.parameters === 'undefined') ? (
+                            {}
+                        ) : (
+                            arr.parameters
+                        )}/>
                 )
             )}
 		</div>
