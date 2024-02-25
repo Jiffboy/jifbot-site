@@ -21,6 +21,16 @@ def commands():
             "description": cmd[2]
         }
 
+        cursor.execute(f"SELECT * FROM CommandParameter WHERE Command='{cmd[0]}'")
+        parameters = cursor.fetchall()
+        if parameters:
+            jsondict[cmd[0]]["parameters"] = {}
+            for param in parameters:
+                jsondict[cmd[0]]["parameters"][param[1]] = {
+                    "description": param[2],
+                    "required": param[3]
+                }
+
     return json.dumps({"commands": jsondict})
 
 
