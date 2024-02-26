@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import Command from './command'
+import LoadingSpinner from '../common/loadingSpinner'
 import './css/command.css'
 
 export default function CommandsPage() {
@@ -12,7 +13,6 @@ export default function CommandsPage() {
 		).then(
 			data => {
 				setCommands(data)
-				console.log(data)
 			}
 		)
 	}, [])
@@ -20,7 +20,7 @@ export default function CommandsPage() {
 	return (
 		<div className='commands-page'>
             {(typeof commands.commands === 'undefined') ? (
-                <p>Loading...</p>
+                <LoadingSpinner/>
             ) : (
                 Object.entries(commands.commands).map(([key, arr]) =>
                     <Command name={key}

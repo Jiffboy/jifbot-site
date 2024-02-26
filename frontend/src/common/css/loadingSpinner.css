@@ -1,0 +1,25 @@
+.loading-text {
+
+}
+
+.loading-spinner {
+    width: 5%;
+    max-width: 50px;
+    animation: spinner-spin infinite 2s linear;
+}
+
+.loading-container {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin-top: 100px;
+}
+
+@keyframes spinner-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

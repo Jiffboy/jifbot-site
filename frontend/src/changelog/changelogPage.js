@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import Changelog from './changelog'
+import LoadingSpinner from '../common/loadingSpinner'
 
 export default function ChangelogPage() {
 
@@ -18,7 +19,7 @@ export default function ChangelogPage() {
     return (
         <div>
             {(typeof changelogs.changelogs === 'undefined') ? (
-                <p>Loading...</p>
+                <LoadingSpinner/>
             ) : (
                 Object.entries(changelogs.changelogs).map(([key, arr]) =>
                     <Changelog date={key}

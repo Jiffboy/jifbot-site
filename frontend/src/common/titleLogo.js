@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom'
 import './css/titlelogo.css'
 import logo from '../resources/jifbot-logo.png'
 
