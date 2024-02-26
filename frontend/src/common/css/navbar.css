@@ -1,0 +1,22 @@
+.navbar {
+    text-align: center;
+}
+
+.navbar-link {
+  background-color: ;
+  border: none;
+  color: white;
+  padding: 10px 15px;
+  margin-left: 5px;
+  margin-top: 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 20px;
+  outline: none;
+}
+
+.navbar-link:hover {
+  box-shadow: 0 3px var(--jiflightorange);
+  cursor: pointer;
+}

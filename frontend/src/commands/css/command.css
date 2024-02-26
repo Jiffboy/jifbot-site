@@ -1,0 +1,27 @@
+.command-title {
+    background-color: var(--jifdarkgrey);
+    color: var(--jiforange);
+    padding-left: 20px;
+    padding-bottom: 5px;
+}
+
+.command-card {
+    background-color: var(--jifgrey);
+    padding-bottom: 10px;
+    box-shadow: 0 3px var(--jifdarkgrey);
+    border-radius: 20px;
+}
+
+.command-description {
+    color: white;
+    padding-left: 20px;
+}
+
+.command-parameter {
+    padding-left: 40px;
+}
+
+.parameter-text {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}

@@ -1,18 +1,11 @@
 import { Link } from 'react-router-dom'
+import './css/navbar.css'
 
 export default function Navbar() {
-    return <nav className="nav">
-        <Link to="/">Jif Bot</Link>
-        <ul>
-            <li>
-                <Link to="/commands">Commands</Link>
-            </li>
-            <li>
-                <Link to="/changelog">Changelog</Link>
-            </li>
-            <li>
-                <Link to="/setup">Setup</Link>
-            </li>
-        </ul>
+    return <nav className="navbar">
+        <Link to="/" className='navbar-link'>About</Link>
+        <Link to="/commands" className='navbar-link'>Commands</Link>
+        <Link to="/changelog" className='navbar-link'>Changelog</Link>
+        <Link to="/setup" className='navbar-link'>Setup</Link>
     </nav>
 }

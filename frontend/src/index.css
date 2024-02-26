@@ -1,0 +1,17 @@
+@font-face {
+	font-family: "Smallest Pixel-7";
+	src: url("./resources/Smallest Pixel-7.woff") format('woff');
+}
+
+html {
+    font-family: "Smallest Pixel-7";
+    background-color: #2c2e3a;
+    color: white;
+}
+
+:root {
+    --jiforange: #ffa200;
+    --jiflightorange: #ffe199;
+    --jifdarkgrey: #15161c;
+    --jifgrey: #252730;
+}

@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import Command from './command'
+import './css/command.css'
 
 export default function CommandsPage() {
 
@@ -17,7 +18,7 @@ export default function CommandsPage() {
 	}, [])
 
 	return (
-		<div>
+		<div className='commands-page'>
             {(typeof commands.commands === 'undefined') ? (
                 <p>Loading...</p>
             ) : (

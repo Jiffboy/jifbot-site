@@ -1,0 +1,19 @@
+.title-logo {
+    display: flex;
+    justify-content: center;
+    height: 10vh;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+.title-text {
+    font-size: 10vh;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    color: var(--jiforange);
+}
+
+.logo {
+    margin-left: 20px;
+    margin-right: 20px;
+}

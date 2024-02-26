@@ -21,7 +21,7 @@ def commands():
             "description": cmd[2]
         }
 
-        cursor.execute(f"SELECT * FROM CommandParameter WHERE Command='{cmd[0]}'")
+        cursor.execute(f"SELECT * FROM CommandParameter WHERE Command='{cmd[0]}' ORDER BY Required DESC, Name ASC")
         parameters = cursor.fetchall()
         if parameters:
             jsondict[cmd[0]]["parameters"] = {}
