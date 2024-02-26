@@ -7,6 +7,7 @@ html {
     font-family: "Smallest Pixel-7";
     background-color: #2c2e3a;
     color: white;
+    scrollbar-gutter: stable;
 }
 
 :root {

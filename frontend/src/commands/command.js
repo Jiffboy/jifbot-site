@@ -11,7 +11,7 @@ interface commandProps {
 
 export default function Command(commandProps) {
     return <div className='command-card'>
-        <h1 className='command-title'>{commandProps.name}</h1>
+        <h1 className='command-title'>> {commandProps.name}</h1>
         <h3 className='command-description'>{commandProps.description}</h3>
             {Object.entries(commandProps.parameters).map(([key, arr]) =>
                 <CommandParameter
