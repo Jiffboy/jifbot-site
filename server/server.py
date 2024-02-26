@@ -11,7 +11,7 @@ app = Flask(__name__)
 def commands():
     connection = sqlite3.connect(os.getenv('JIFBOT_DB'))
     cursor = connection.cursor()
-    cursor.execute("SELECT * FROM Command")
+    cursor.execute("SELECT * FROM Command ORDER BY Name ASC")
     commands = cursor.fetchall()
 
     jsondict = {}
