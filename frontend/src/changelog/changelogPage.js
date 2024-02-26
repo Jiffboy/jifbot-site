@@ -6,7 +6,7 @@ export default function ChangelogPage() {
 	const[changelogs, setChangelogs] = useState([{}])
 
 	useEffect(() => {
-		fetch("/changelogs").then(
+		fetch("/api/changelogs").then(
 			res => res.json()
 		).then(
 			data => {

@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 
 # Commands API Route
-@app.route("/commands")
+@app.route("/api/commands")
 def commands():
     connection = sqlite3.connect(os.getenv('JIFBOT_DB'))
     cursor = connection.cursor()
@@ -34,7 +34,7 @@ def commands():
     return json.dumps({"commands": jsondict})
 
 
-@app.route("/changelogs")
+@app.route("/api/changelogs")
 def changelogs():
     connection = sqlite3.connect(os.getenv('JIFBOT_DB'))
     cursor = connection.cursor()

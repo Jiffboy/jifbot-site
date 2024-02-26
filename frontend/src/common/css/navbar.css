@@ -20,3 +20,7 @@
   box-shadow: 0 3px var(--jiflightorange);
   cursor: pointer;
 }
+
+.navbar-link.active {
+    box-shadow: 0 3px var(--jiforange);
+}
