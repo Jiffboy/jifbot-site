@@ -5,7 +5,9 @@ import './css/command.css'
 
 export default function CommandsPage() {
 
-	const[commands, setCommands] = useState([{}])
+	const[commands, setCommands] = useState([{}]);
+	const[commandComponents, setCommandComponents] = useState([]);
+	const[currCategory, setCurrCategory] = useState('all');
 
 	useEffect(() => {
 		fetch("/api/commands").then(
@@ -13,7 +15,7 @@ export default function CommandsPage() {
 		).then(
 			data => {
 				setCommands(data)
-			}
+            }
 		)
 	}, [])
 
@@ -22,17 +24,29 @@ export default function CommandsPage() {
             {(typeof commands.commands === 'undefined') ? (
                 <LoadingSpinner/>
             ) : (
-                Object.entries(commands.commands).map(([key, arr]) =>
+                <div>
+                    <select
+                        value={currCategory}
+                        onChange={e => setCurrCategory(e.target.value)}
+                    >
+                        <option value="all">All Categories</option>
+                        { commands.categories.map((category, i) =>
+                            <option key={i} value={category}>{category}</option>
+                        )}
+                    </select>
+                    {Object.entries(commands.commands).map(([key, arr]) =>
                     <Command name={key}
-                    category={arr.category}
-                    description={arr.description}
-                    parameters={
-                        (typeof arr.parameters === 'undefined') ? (
-                            {}
-                        ) : (
-                            arr.parameters
-                        )}/>
-                )
+                        category={arr.category}
+                        description={arr.description}
+                        parameters={
+                            (typeof arr.parameters === 'undefined') ? (
+                                {}
+                            ) : (
+                                arr.parameters
+                            )}
+                        currCategory={currCategory}
+                    />)}
+                </div>
             )}
 		</div>
 	)

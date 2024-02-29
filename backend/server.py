@@ -14,9 +14,9 @@ def commands():
     cursor.execute("SELECT * FROM Command ORDER BY Name ASC")
     commands = cursor.fetchall()
 
-    jsondict = {}
+    commanddict = {}
     for cmd in commands:
-        jsondict[cmd[0]] = {
+        commanddict[cmd[0]] = {
             "category": cmd[1],
             "description": cmd[2]
         }
@@ -24,14 +24,20 @@ def commands():
         cursor.execute(f"SELECT * FROM CommandParameter WHERE Command='{cmd[0]}' ORDER BY Required DESC, Name ASC")
         parameters = cursor.fetchall()
         if parameters:
-            jsondict[cmd[0]]["parameters"] = {}
+            commanddict[cmd[0]]["parameters"] = {}
             for param in parameters:
-                jsondict[cmd[0]]["parameters"][param[1]] = {
+                commanddict[cmd[0]]["parameters"][param[1]] = {
                     "description": param[2],
                     "required": param[3]
                 }
 
-    return json.dumps({"commands": jsondict})
+    cursor.execute(f"SELECT DISTINCT Category FROM Command ASC")
+    categories = cursor.fetchall()
+    categorylist = []
+    for category in categories:
+        categorylist += category
+
+    return json.dumps({"categories": categorylist,"commands": commanddict})
 
 
 @app.route("/api/changelogs")
