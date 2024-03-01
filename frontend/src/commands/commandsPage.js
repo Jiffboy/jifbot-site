@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react'
+import Select from 'react-select'
 import Command from './command'
 import LoadingSpinner from '../common/loadingSpinner'
 import './css/command.css'
@@ -8,6 +9,7 @@ export default function CommandsPage() {
 	const[commands, setCommands] = useState([{}]);
 	const[commandComponents, setCommandComponents] = useState([]);
 	const[currCategory, setCurrCategory] = useState('all');
+	const[categories, setCategories] = useState([{value: 'all', label: 'All Categories'}]);
 
 	useEffect(() => {
 		fetch("/api/commands").then(
@@ -15,6 +17,8 @@ export default function CommandsPage() {
 		).then(
 			data => {
 				setCommands(data)
+				var catList = data.categories.map((category) => ({value: category, label: category}))
+				setCategories(categories.concat(catList))
             }
 		)
 	}, [])
@@ -25,17 +29,16 @@ export default function CommandsPage() {
                 <LoadingSpinner/>
             ) : (
                 <div>
-                    <select
-                        value={currCategory}
-                        onChange={e => setCurrCategory(e.target.value)}
-                    >
-                        <option value="all">All Categories</option>
-                        { commands.categories.map((category, i) =>
-                            <option key={i} value={category}>{category}</option>
-                        )}
-                    </select>
+                    <div className='category-select'>
+                        <Select
+                            onChange={e => setCurrCategory(e['value'])}
+                            options={categories}
+                        />
+                    </div>
                     {Object.entries(commands.commands).map(([key, arr]) =>
-                    <Command name={key}
+                    <Command
+                        key={key}
+                        name={key}
                         category={arr.category}
                         description={arr.description}
                         parameters={

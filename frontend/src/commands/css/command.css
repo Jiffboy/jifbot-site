@@ -31,4 +31,6 @@
 
 .category-select {
     margin: auto;
+    text-align: center;
+    width: 30%;
 }
