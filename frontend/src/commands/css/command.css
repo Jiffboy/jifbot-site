@@ -1,8 +1,16 @@
+.commands-page {
+    margin: auto;
+    display: inline-block;
+    text-align: center;
+}
+
 .command-title {
     background-color: var(--jifdarkgrey);
     color: var(--jiforange);
     padding-left: 20px;
     padding-bottom: 5px;
+    margin-bottom: 0px;
+    margin-top: 18px;
 }
 
 .command-card {
@@ -10,18 +18,22 @@
     padding-bottom: 10px;
     box-shadow: 0 3px var(--jifdarkgrey);
     border-radius: 20px;
-    margin: auto;
-    width: 90%;
-    max-width:1000px;
+    margin: 10px;
+    width: 600px;
+    display: inline-grid;
+    text-align: left;
 }
 
 .command-description {
     color: white;
     padding-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 10px;
 }
 
 .command-parameter {
     padding-left: 40px;
+    margin-right: 20px
 }
 
 .parameter-text {
@@ -31,6 +43,7 @@
 
 .category-select {
     margin: auto;
+    margin-bottom: 20px;
     text-align: center;
     width: 30%;
 }

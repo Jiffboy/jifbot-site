@@ -1,5 +1,6 @@
 .navbar {
     text-align: center;
+    margin-bottom: 70px;
 }
 
 .navbar-link {
@@ -17,10 +18,10 @@
 }
 
 .navbar-link:hover {
-  box-shadow: 0 3px var(--jiflightorange);
+  box-shadow: 0 3px 0 0 var(--jiflightorange);
   cursor: pointer;
 }
 
 .navbar-link.active {
-    box-shadow: 0 3px var(--jiforange);
+    box-shadow: 0 3px 0 0 var(--jiforange);
 }
