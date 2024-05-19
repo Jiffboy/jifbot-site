@@ -38,7 +38,7 @@ export default function CommandsPage() {
                     <div className='category-select'>
                         <Select
                             onChange={e => setCurrCategory(e['value'])}
-                            defaultValue={value: 'all', label: 'All Categories'}
+                            defaultValue={{value: 'all', label: 'All Categories'}}
                             options={categories}
                             theme={(theme) => ({
                                 ...theme,
