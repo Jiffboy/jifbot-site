@@ -2,6 +2,7 @@ from flask import Flask
 import sqlite3
 import os
 import json
+import sys
 
 app = Flask(__name__)
 
@@ -67,4 +68,7 @@ def changelogs():
 
 
 if __name__ == "__main__":
-   app.run(debug=True)
+    if len(sys.argv) > 1 and sys.argv[1] == "debug":
+        app.run(debug=True)
+    else:
+        app.run(debug=False)
