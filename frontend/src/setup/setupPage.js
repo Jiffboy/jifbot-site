@@ -1,7 +1,8 @@
 import React from 'react'
+import '../common/css/textPageContainer.css'
 
 export default function SetupPage() {
-    return <div>
-        <p> Time to set up! </p>
+    return <div className="text-page-container">
+        <p> Coming Soon </p>
     </div>
 }

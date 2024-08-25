@@ -2,7 +2,6 @@
     left:0;
     bottom:0;
     height: 100px;
-    margin-left: 0px;
     display: grid;
     grid-template-columns: 200px 200px;
     justify-items: center;
@@ -28,4 +27,8 @@
     width: 60%;
     border-style: solid;
     border-color: var(--jifgrey);
+}
+
+.footer-text {
+    margin: 0px;
 }
