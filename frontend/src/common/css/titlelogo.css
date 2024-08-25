@@ -1,13 +1,14 @@
 .title-logo {
     display: flex;
     justify-content: center;
-    height: 10vh;
+    height: 100px;
     margin-bottom: 20px;
     margin-top: 20px;
+    min-height: 100px;
 }
 
 .title-text {
-    font-size: 10vh;
+    font-size: 100px;
     margin-top: 0px;
     margin-bottom: 0px;
     color: var(--jiforange);

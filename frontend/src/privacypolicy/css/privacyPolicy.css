@@ -1,0 +1,12 @@
+.privacy-link {
+    text-decoration: none;
+    color: var(--jiflightorange);
+}
+
+.privacy-link:hover {
+    color: var(--jiforange);
+}
+
+.privacy-header {
+    text-align: center;
+}
