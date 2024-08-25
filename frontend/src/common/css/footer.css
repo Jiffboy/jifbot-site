@@ -2,8 +2,6 @@
     left:0;
     bottom:0;
     height: 100px;
-    background-color: var(--jifgrey);
-    margin-top: 100px;
     margin-left: 0px;
     display: grid;
     grid-template-columns: 200px 200px;
@@ -14,4 +12,20 @@
 .footer-link {
     display: inline-block;
     vertical-align: top;
+    color: white;
+    text-decoration: none;
+}
+
+.footer-link:hover {
+  color: var(--jiflightorange)
+}
+
+.footer-container {
+    margin-top: 100px;
+}
+
+.footer-line {
+    width: 60%;
+    border-style: solid;
+    border-color: var(--jifgrey);
 }
