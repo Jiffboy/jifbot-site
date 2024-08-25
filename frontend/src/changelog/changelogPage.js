@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import Changelog from './changelog'
 import LoadingSpinner from '../common/loadingSpinner'
+import '../common/css/textPageContainer.css'
 
 export default function ChangelogPage() {
 
@@ -17,7 +18,7 @@ export default function ChangelogPage() {
 	}, [])
 
     return (
-        <div>
+        <div class='text-page-container'>
             {(typeof changelogs.changelogs === 'undefined') ? (
                 <LoadingSpinner/>
             ) : (

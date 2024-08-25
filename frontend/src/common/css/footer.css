@@ -1,0 +1,17 @@
+.footer {
+    left:0;
+    bottom:0;
+    height: 100px;
+    background-color: var(--jifgrey);
+    margin-top: 100px;
+    margin-left: 0px;
+    display: grid;
+    grid-template-columns: 200px 200px;
+    justify-items: center;
+    justify-content: center;
+}
+
+.footer-link {
+    display: inline-block;
+    vertical-align: top;
+}
