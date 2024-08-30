@@ -3,7 +3,7 @@ import Navbar from './common/navbar'
 import HomePage from './home/homePage'
 import CommandsPage from './commands/commandsPage'
 import ChangelogPage from './changelog/changelogPage'
-import SetupPage from './setup/setupPage'
+import StatsPage from './stats/statsPage'
 import PrivacyPolicyPage from './privacypolicy/privacyPolicyPage'
 import TermsOfServicePage from './tos/termsOfServicePage'
 import TitleLogo from './common/titleLogo'
@@ -21,7 +21,7 @@ function App() {
                     <Route path="/" element={<HomePage/>}/>
                     <Route path="/commands" element={<CommandsPage/>}/>
                     <Route path="/changelog" element={<ChangelogPage/>}/>
-                    <Route path="/setup" element={<SetupPage/>}/>
+                    <Route path="/stats" element={<StatsPage/>}/>
                     <Route path="/tos" element={<TermsOfServicePage/>}/>
                     <Route path="/privacy" element={<PrivacyPolicyPage/>}/>
                 </Routes>
