@@ -5,6 +5,6 @@ git pull
 
 cd frontend
 npm install
-npm build
+npm run build
 
 sudo systemctl start backend.service
