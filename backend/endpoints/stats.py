@@ -20,14 +20,14 @@ def stats():
 
     # Month Data
     currCutoff = getTodayCutoff()
-    currDayFormatted = datetime.utcfromtimestamp(currCutoff).strftime('%Y-%m-%d')
+    currDayFormatted = datetime.utcfromtimestamp(currCutoff).strftime('%m-%d')
     dayCounts = {currDayFormatted: 0}
     commandCounts = {}
     for cmd in commandCalls:
         if cmd[1] < currCutoff:
             while cmd[1] < currCutoff:
                 currCutoff = (datetime.utcfromtimestamp(currCutoff) - timedelta(days=1)).timestamp()
-                currDayFormatted = datetime.utcfromtimestamp(currCutoff).strftime('%Y-%m-%d')
+                currDayFormatted = datetime.utcfromtimestamp(currCutoff).strftime('%m-%d')
                 dayCounts[currDayFormatted] = 0
         dayCounts[currDayFormatted] += 1
 
@@ -35,8 +35,18 @@ def stats():
             commandCounts[cmd[0]] = 0
         commandCounts[cmd[0]] += 1
 
+    currCutoff = (datetime.utcfromtimestamp(currCutoff) - timedelta(days=1)).timestamp()
+    while currCutoff > monthCutoff:
+        currDayFormatted = datetime.utcfromtimestamp(currCutoff).strftime('%m-%d')
+        dayCounts[currDayFormatted] = 0
+        currCutoff = (datetime.utcfromtimestamp(currCutoff) - timedelta(days=1)).timestamp()
+
     commandCounts = dict(sorted(commandCounts.items(), key=lambda x:x[1], reverse=True))
-    return json.dumps({"30day": {"callsByDay": dayCounts, "commandCounts": commandCounts}})
+    return json.dumps({
+        "thirtyDay":
+            {"callsByDay": dict(reversed(list(dayCounts.items()))),
+             "commandCounts": commandCounts}
+    })
 
 
 def getYearCutoff():
