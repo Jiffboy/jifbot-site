@@ -9,14 +9,14 @@
 }
 
 .footer-link {
-    display: inline-block;
+    display: block;
     vertical-align: top;
     color: white;
     text-decoration: none;
 }
 
 .footer-link:hover {
-  color: var(--jiflightorange)
+  color: var(--jiforange)
 }
 
 .footer-container {
@@ -31,4 +31,6 @@
 
 .footer-text {
     margin: 0px;
+    margin-bottom: 10px;
+    color: var(--jiflightorange);
 }

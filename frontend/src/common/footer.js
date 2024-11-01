@@ -5,11 +5,17 @@ export default function Footer() {
     return <div className='footer-container'>
     <hr className='footer-line'/>
         <footer className='footer'>
-            <p className="footer-text">A bot by Jiffboy</p>
             <nav className="footer-navbar">
-                <NavLink to="/tos" className='footer-link' isActive={true}>Terms of Service</NavLink>
+                <p className="footer-text">Follow Me</p>
+                <NavLink to="https://bsky.app/profile/jiffboy.bsky.social" className='footer-link'>Bluesky</NavLink>
+                <NavLink to="https://x.com/JifBoy" className='footer-link'>Twitter</NavLink>
+            </nav>
+            <nav className="footer-navbar">
+                <p className="footer-text">Legal Stuff</p>
+                <NavLink to="/tos" className='footer-link'>Terms of Service</NavLink>
                 <NavLink to="/privacy" className='footer-link'>Privacy Policy</NavLink>
             </nav>
+
         </footer>
     </div>
 }
