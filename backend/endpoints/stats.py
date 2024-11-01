@@ -2,7 +2,6 @@ from flask import Blueprint
 import sqlite3
 import os
 import json
-import collections
 from datetime import datetime
 from datetime import timedelta
 
@@ -15,11 +14,12 @@ def stats():
     cursor = connection.cursor()
 
     monthData = get30DayData(cursor)
+    yearData = getYearData(cursor)
     allTimeData = getAllTimeData(cursor)
-
 
     return json.dumps({
         "thirtyDay": monthData,
+        "year": yearData,
         "allTime": allTimeData
     })
 
@@ -31,6 +31,21 @@ def getAllTimeData(cursor):
     for cmd in commands:
         commandCounts[cmd[0]] = cmd[1]
     return {"commandCounts": commandCounts}
+
+
+def getYearData(cursor):
+    lastCutoff = datetime.today()
+    currCutoff = datetime(lastCutoff.year, lastCutoff.month, 1)
+    callCounts = {}
+    for x in range(0,12):
+        cursor.execute(f"SELECT COUNT(*) FROM CommandCall WHERE Timestamp >= {currCutoff.timestamp()} AND Timestamp < {lastCutoff.timestamp()}")
+        count = cursor.fetchone()
+        callCounts[currCutoff.month] = count[0]
+        lastCutoff = currCutoff
+        currCutoff = getNextMonthDesc(currCutoff)
+    return {"callsByMonth": dict(reversed(list(callCounts.items())))}
+
+
 
 
 def get30DayData(cursor):
@@ -65,14 +80,6 @@ def get30DayData(cursor):
     return {"callsByDay": dict(reversed(list(dayCounts.items()))), "commandCounts": commandCounts}
 
 
-def getYearCutoff():
-    today = datetime.today()
-    monthStart = datetime(today.year, today.month, 1)
-    # fuck leap years don't care
-    yearAgo = monthStart - timedelta(days=365)
-    return yearAgo.timestamp()
-
-
 def get30dayCutoff():
     today = datetime.today()
     monthAgo = today - timedelta(days=30)
@@ -83,3 +90,10 @@ def getTodayCutoff():
     today = datetime.today()
     todayStart = datetime(today.year, today.month, today.day)
     return todayStart.timestamp()
+
+
+def getNextMonthDesc(date):
+    if date.month == 1:
+        return datetime(date.year-1, 12, 1)
+    else:
+        return datetime(date.year, date.month-1, 1)

@@ -10,7 +10,7 @@ interface DoughnutProps {
 
 export default function DoughnutChart<DoughnutProps>(props) {
     const palette = [
-        "#dd7706",
+        "#ffa200",
         "#7d4829",
         "#f1eadf",
         "#ecaa94"

@@ -3,9 +3,11 @@ import '../common/css/textPageContainer.css'
 import './css/statspage.css'
 import LineChart from './lineChart.js'
 import Doughnut from './doughnutChart.js'
+import BarChart from './barChart.js'
 
 export default function StatsPage() {
     const[monthCallCounts, setMonthCallCounts] = useState([{}]);
+    const[yearCallCounts, setYearCallCounts] = useState([{}])
     const[monthCommandCounts, setMonthCommandCounts] = useState([{}]);
     const[allTimeCommandCounts, setAllTimeCommandCounts] = useState([{}])
 
@@ -31,6 +33,7 @@ export default function StatsPage() {
 		).then(
 			data => {
 				setMonthCallCounts(data.thirtyDay.callsByDay)
+				setYearCallCounts(data.year.callsByMonth)
 				FormatCommands(data.thirtyDay.commandCounts, setMonthCommandCounts)
 				FormatCommands(data.allTime.commandCounts, setAllTimeCommandCounts)
             }
@@ -40,6 +43,7 @@ export default function StatsPage() {
     return <div className="text-page-container">
         <div className="stats-page-container">
             <LineChart data = {monthCallCounts} title="Command calls in the last 30 days" />
+            <BarChart data = {yearCallCounts} title="Monthly command calls" />
             <div className="donut-line">
                 <Doughnut data = {monthCommandCounts} title="Commands last 30 days"/>
                 <Doughnut data = {allTimeCommandCounts} title="Commands all time"/>
