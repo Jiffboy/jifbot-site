@@ -1,0 +1,28 @@
+.stats-page-container {
+    display: inline;
+    text-align: center;
+}
+
+.donut-line{
+    display: flex;
+    flex-wrap: wrap;
+    text-align: center;
+    width: 100%;
+}
+
+.donut-container {
+    min-width: 400px;
+    width: 40%;
+    text-align: center;
+    display: inline;
+    margin: 0 auto;
+    margin-bottom: 100px;
+}
+
+.line-container {
+    position: relative;
+    min-width: 400px;
+    text-align: center;
+    margin: 0 auto;
+    margin-bottom: 100px;
+}

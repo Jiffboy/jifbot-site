@@ -11,14 +11,33 @@ stats_endpoint = Blueprint('stats_endpoint', __name__)
 
 @stats_endpoint.route('/api/stats')
 def stats():
-    yearCutoff = getYearCutoff()
-    monthCutoff = getMonthCutoff()
     connection = sqlite3.connect(os.getenv('JIFBOT_DB'))
     cursor = connection.cursor()
+
+    monthData = get30DayData(cursor)
+    allTimeData = getAllTimeData(cursor)
+
+
+    return json.dumps({
+        "thirtyDay": monthData,
+        "allTime": allTimeData
+    })
+
+
+def getAllTimeData(cursor):
+    cursor.execute(f"SELECT Command, COUNT(*) as count FROM CommandCall GROUP By Command ORDER BY count DESC")
+    commands = cursor.fetchall()
+    commandCounts = {}
+    for cmd in commands:
+        commandCounts[cmd[0]] = cmd[1]
+    return {"commandCounts": commandCounts}
+
+
+def get30DayData(cursor):
+    monthCutoff = get30dayCutoff()
     cursor.execute(f"SELECT Command, Timestamp FROM CommandCall WHERE Timestamp > {monthCutoff} ORDER BY Timestamp DESC")
     commandCalls = cursor.fetchall()
 
-    # Month Data
     currCutoff = getTodayCutoff()
     currDayFormatted = datetime.utcfromtimestamp(currCutoff).strftime('%m-%d')
     dayCounts = {currDayFormatted: 0}
@@ -41,12 +60,9 @@ def stats():
         dayCounts[currDayFormatted] = 0
         currCutoff = (datetime.utcfromtimestamp(currCutoff) - timedelta(days=1)).timestamp()
 
-    commandCounts = dict(sorted(commandCounts.items(), key=lambda x:x[1], reverse=True))
-    return json.dumps({
-        "thirtyDay":
-            {"callsByDay": dict(reversed(list(dayCounts.items()))),
-             "commandCounts": commandCounts}
-    })
+    commandCounts = dict(sorted(commandCounts.items(), key=lambda x: x[1], reverse=True))
+
+    return {"callsByDay": dict(reversed(list(dayCounts.items()))), "commandCounts": commandCounts}
 
 
 def getYearCutoff():
@@ -57,10 +73,11 @@ def getYearCutoff():
     return yearAgo.timestamp()
 
 
-def getMonthCutoff():
+def get30dayCutoff():
     today = datetime.today()
     monthAgo = today - timedelta(days=30)
-    return  monthAgo.timestamp()
+    return monthAgo.timestamp()
+
 
 def getTodayCutoff():
     today = datetime.today()
