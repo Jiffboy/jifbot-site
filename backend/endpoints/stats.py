@@ -27,69 +27,63 @@ def stats():
 def getAllTimeData(cursor):
     cursor.execute(f"SELECT Command, COUNT(*) as count FROM CommandCall GROUP By Command ORDER BY count DESC")
     commands = cursor.fetchall()
-    commandCounts = {}
+    commandCounts = []
     for cmd in commands:
-        commandCounts[cmd[0]] = cmd[1]
+        commandCounts.append({"command": cmd[0], "count": cmd[1]})
     return {"commandCounts": commandCounts}
 
 
 def getYearData(cursor):
     lastCutoff = datetime.today()
     currCutoff = datetime(lastCutoff.year, lastCutoff.month, 1)
-    callCounts = {}
+    callCounts = []
     for x in range(0,12):
         cursor.execute(f"SELECT COUNT(*) FROM CommandCall WHERE Timestamp >= {currCutoff.timestamp()} AND Timestamp < {lastCutoff.timestamp()}")
         count = cursor.fetchone()
-        callCounts[currCutoff.month] = count[0]
+        callCounts.insert(0, {"month": currCutoff.month, "count": count[0]})
         lastCutoff = currCutoff
         currCutoff = getNextMonthDesc(currCutoff)
-    return {"callsByMonth": dict(reversed(list(callCounts.items())))}
+    return {"callsByMonth": callCounts}
 
 
 
 
 def get30DayData(cursor):
-    monthCutoff = get30dayCutoff()
-    cursor.execute(f"SELECT Command, Timestamp FROM CommandCall WHERE Timestamp > {monthCutoff} ORDER BY Timestamp DESC")
+    today = datetime.today()
+    currCutoff = datetime(today.year, today.month, today.day)
+    monthCutoff = currCutoff - timedelta(days=30)
+    cursor.execute(f"SELECT Command, Timestamp FROM CommandCall WHERE Timestamp > {monthCutoff.timestamp()} ORDER BY Timestamp DESC")
     commandCalls = cursor.fetchall()
 
-    currCutoff = getTodayCutoff()
-    currDayFormatted = datetime.utcfromtimestamp(currCutoff).strftime('%m-%d')
-    dayCounts = {currDayFormatted: 0}
     commandCounts = {}
+    callsByDay = []
+    todayCount = 0
+    dayCount = 1
     for cmd in commandCalls:
-        if cmd[1] < currCutoff:
-            while cmd[1] < currCutoff:
-                currCutoff = (datetime.utcfromtimestamp(currCutoff) - timedelta(days=1)).timestamp()
-                currDayFormatted = datetime.utcfromtimestamp(currCutoff).strftime('%m-%d')
-                dayCounts[currDayFormatted] = 0
-        dayCounts[currDayFormatted] += 1
+        if cmd[1] < currCutoff.timestamp():
+            while cmd[1] < currCutoff.timestamp():
+                callsByDay.insert(0, {"date": currCutoff.strftime('%m-%d'), "count": todayCount})
+                todayCount = 0
+                currCutoff = (currCutoff - timedelta(days=1))
+                dayCount += 1
+        todayCount += 1
 
         if cmd[0] not in commandCounts:
             commandCounts[cmd[0]] = 0
         commandCounts[cmd[0]] += 1
 
-    currCutoff = (datetime.utcfromtimestamp(currCutoff) - timedelta(days=1)).timestamp()
-    while currCutoff > monthCutoff:
-        currDayFormatted = datetime.utcfromtimestamp(currCutoff).strftime('%m-%d')
-        dayCounts[currDayFormatted] = 0
-        currCutoff = (datetime.utcfromtimestamp(currCutoff) - timedelta(days=1)).timestamp()
+    # Handle any we may have missed
+    while dayCount < 30:
+        dayCount += 1
+        currCutoff = (currCutoff - timedelta(days=1))
+        callsByDay.insert(0, {"date": currCutoff.strftime('%m-%d'), "count": 0})
 
-    commandCounts = dict(sorted(commandCounts.items(), key=lambda x: x[1], reverse=True))
+    sortedList = sorted(commandCounts.items(), key=lambda x: x[1], reverse=True)
+    commandCounts = []
+    for item in sortedList:
+        commandCounts.append({"command": item[0], "count": item[1]})
 
-    return {"callsByDay": dict(reversed(list(dayCounts.items()))), "commandCounts": commandCounts}
-
-
-def get30dayCutoff():
-    today = datetime.today()
-    monthAgo = today - timedelta(days=30)
-    return monthAgo.timestamp()
-
-
-def getTodayCutoff():
-    today = datetime.today()
-    todayStart = datetime(today.year, today.month, today.day)
-    return todayStart.timestamp()
+    return {"callsByDay": callsByDay, "commandCounts": commandCounts}
 
 
 def getNextMonthDesc(date):

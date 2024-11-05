@@ -15,15 +15,17 @@ export default function StatsPage() {
         const newMap = {}
         var  curr = 0
         var otherTotal = 0
-        for (let command in data){
+        for (var entry of data){
             if (curr >= 10) {
-                otherTotal += data[command]
+                otherTotal += entry.count
             } else {
-                newMap[command] = data[command]
+                newMap[entry.command] = entry.count
             }
             curr += 1
         }
-        newMap['other'] = otherTotal
+        if (otherTotal > 0) {
+            newMap['other'] = otherTotal
+        }
         setter(newMap)
     }
 

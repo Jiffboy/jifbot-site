@@ -9,11 +9,13 @@ interface BarChartProps {
 }
 
 export default function BarChart<BarChartProps>(props) {
+    var labels = props.data.map(function(e) { return e.month})
+    var data = props.data.map(function(e) { return e.count})
     const barData = {
-        labels: Object.keys(props.data),
+        labels: labels,
         datasets: [{
             label: "Calls",
-            data: Object.values(props.data),
+            data: data,
             borderColor: "#ffa200",
             fill: true,
             backgroundColor: "#ffa200"

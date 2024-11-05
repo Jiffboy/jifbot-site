@@ -9,11 +9,13 @@ interface LineChartProps {
 }
 
 export default function LineChart<LineChartProps>(props) {
+    var labels = props.data.map(function(e) { return e.date})
+    var data = props.data.map(function(e) { return e.count})
     const lineData = {
-        labels: Object.keys(props.data),
+        labels: labels,
         datasets: [{
             label: "Calls",
-            data: Object.values(props.data),
+            data: data,
             borderColor: "#ffa200",
             fill: true,
             pointBackgroundColor: "#ffa200"
