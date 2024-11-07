@@ -40,7 +40,7 @@ def getYearData(cursor):
     for x in range(0,12):
         cursor.execute(f"SELECT COUNT(*) FROM CommandCall WHERE Timestamp >= {currCutoff.timestamp()} AND Timestamp < {lastCutoff.timestamp()}")
         count = cursor.fetchone()
-        callCounts.insert(0, {"month": currCutoff.month, "count": count[0]})
+        callCounts.insert(0, {"month": currCutoff.strftime("%b"), "count": count[0]})
         lastCutoff = currCutoff
         currCutoff = getNextMonthDesc(currCutoff)
     return {"callsByMonth": callCounts}
