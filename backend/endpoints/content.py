@@ -8,9 +8,10 @@ content_endpoint = Blueprint('content_endpoint', __name__)
 
 @content_endpoint.route('/img/character/<key>', methods=['GET'])
 def image(key):
+    charkey, imagetype = key.split(".")
     connection = sqlite3.connect(os.getenv('JIFBOT_DB'))
     cursor = connection.cursor()
-    cursor.execute(f"SELECT Image, ImageType FROM Character WHERE Key == \"{key}\"")
+    cursor.execute(f"SELECT Image, ImageType FROM Character WHERE Key == \"{charkey}\" AND ImageType == \"{imagetype}\"")
     character = cursor.fetchone()
 
     return send_file(io.BytesIO(character[0]), mimetype=f"image/{character[1]}")
