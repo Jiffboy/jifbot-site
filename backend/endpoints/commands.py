@@ -5,6 +5,7 @@ import json
 
 commands_endpoint = Blueprint('commands_endpoint', __name__)
 
+
 @commands_endpoint.route('/api/commands')
 def commands():
     connection = sqlite3.connect(os.getenv('JIFBOT_DB'))
