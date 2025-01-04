@@ -1,5 +1,8 @@
 .text-page-container {
     width: 60%;
+    @media (max-width: 1350px){
+        width: 90%;
+    }
     background-color: var(--jifgrey);
     margin-left: auto;
     margin-right: auto;
