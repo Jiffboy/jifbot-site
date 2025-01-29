@@ -6,7 +6,7 @@ import json
 character_endpoint = Blueprint('character_endpoint', __name__)
 
 
-@character_endpoint.route('/api/character/<key>', methods=['GET'])
+@character_endpoint.route('/api/characters/<key>', methods=['GET'])
 def character(key):
     connection = sqlite3.connect(os.getenv('JIFBOT_DB'))
     cursor = connection.cursor()
@@ -16,7 +16,7 @@ def character(key):
     return json.dumps({"characters": {character[0]: characterJson}})
 
 
-@character_endpoint.route('/api/character/search/<search>', methods=['GET'])
+@character_endpoint.route('/api/characters/search/<search>', methods=['GET'])
 def search(search):
     connection = sqlite3.connect(os.getenv('JIFBOT_DB'))
     cursor = connection.cursor()
