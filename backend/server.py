@@ -13,6 +13,13 @@ app.register_blueprint(stats_endpoint)
 app.register_blueprint(content_endpoint)
 app.register_blueprint(character_endpoint)
 
+
+@app.after_request
+def add_cors_headers(response):
+    response.headers["Access-Control-Allow-Origin"] = "*"
+    return response
+
+
 if __name__ == "__main__":
     if len(sys.argv) > 1 and sys.argv[1] == "debug":
         app.run(debug=True)
