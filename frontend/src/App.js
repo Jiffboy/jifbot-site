@@ -6,6 +6,7 @@ import ChangelogPage from './changelog/changelogPage'
 import StatsPage from './stats/statsPage'
 import PrivacyPolicyPage from './privacypolicy/privacyPolicyPage'
 import TermsOfServicePage from './tos/termsOfServicePage'
+import BlorbopediaPage from './blorbopedia/blorbopediaPage'
 import TitleLogo from './common/titleLogo'
 import Footer from './common/footer'
 import { Route, Routes } from "react-router-dom"
@@ -24,6 +25,7 @@ function App() {
                     <Route path="/stats" element={<StatsPage/>}/>
                     <Route path="/tos" element={<TermsOfServicePage/>}/>
                     <Route path="/privacy" element={<PrivacyPolicyPage/>}/>
+                    <Route path="/blorbopedia" element={<BlorbopediaPage/>}/>
                 </Routes>
             </div>
             <Footer/>

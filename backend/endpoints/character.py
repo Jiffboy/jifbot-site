@@ -42,13 +42,13 @@ def buildCharacterJson(cursor, character):
     user = cursor.fetchone()
     cursor.execute(f"SELECT Alias FROM CharacterAlias WHERE Key == \"{character[0]}\"")
     aliases = cursor.fetchall()
-    aliases = "" if len(aliases) == 0 else ','.join(x[0] for x in aliases)
+    aliases = "" if len(aliases) == 0 else [alias[0] for alias in aliases]
     cursor.execute(f"SELECT Tag FROM CharacterTag WHERE Key == \"{character[0]}\"")
     tags = cursor.fetchall()
-    tags = "" if len(tags) == 0 else ','.join(x[0] for x in tags)
+    tags = "" if len(tags) == 0 else [tag[0] for tag in tags]
 
     image = ""
-    if character[13] != None:
+    if character[13] is not None:
         image = f"https://jifbot.com/img/character/{character[0]}.{character[13]}"
 
     dict = {

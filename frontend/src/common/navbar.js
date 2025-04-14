@@ -7,5 +7,6 @@ export default function Navbar() {
         <NavLink to="/commands" className='navbar-link'>Commands</NavLink>
         <NavLink to="/changelog" className='navbar-link'>Changelog</NavLink>
         <NavLink to="/stats" className='navbar-link'>Stats</NavLink>
+        <NavLink to="/blorbopedia" className='navbar-link'>Blorbopedia</NavLink>
     </nav>
 }
