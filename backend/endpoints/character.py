@@ -2,24 +2,37 @@ from flask import Blueprint
 import sqlite3
 import os
 import json
+import random as randompy
 
 character_endpoint = Blueprint('character_endpoint', __name__)
+
+select_string = "SELECT Key, UserId, Name, Description, Title, Occupation, Age, Race, Pronouns, Sexuality, Origin, Residence, Resources, ImageType FROM Character"
 
 
 @character_endpoint.route('/api/characters/<key>', methods=['GET'])
 def character(key):
     connection = sqlite3.connect(os.getenv('JIFBOT_DB'))
     cursor = connection.cursor()
-    cursor.execute(f"SELECT Key, UserId, Name, Description, Title, Occupation, Age, Race, Pronouns, Sexuality, Origin, Residence, Resources, ImageType FROM Character WHERE Key == \"{key}\"")
-    character = cursor.fetchone()
-    characterJson = buildCharacterJson(cursor, character)
-    return json.dumps({"characters": {character[0]: characterJson}})
+
+    return get_characters(cursor, f"Key == \"{key}\"")
+
+
+@character_endpoint.route('/api/characters/random', methods=['GET'])
+def random():
+    connection = sqlite3.connect(os.getenv('JIFBOT_DB'))
+    cursor = connection.cursor()
+
+    cursor.execute("SELECT Count() FROM Character")
+    count = cursor.fetchone()[0]
+    target = randompy.randrange(0, count)
+    return get_characters(cursor, f"_ROWID_ == {target}")
 
 
 @character_endpoint.route('/api/characters/search/<search>', methods=['GET'])
 def search(search):
     connection = sqlite3.connect(os.getenv('JIFBOT_DB'))
     cursor = connection.cursor()
+
     cursor.execute(f"SELECT Key FROM CharacterAlias WHERE Alias LIKE \"%{search}%\"")
     aliasKeys = [x[0] for x in cursor.fetchall()]
     cursor.execute(f"SELECT Key FROM CharacterTag WHERE Tag LIKE \"%{search}%\"")
@@ -27,17 +40,22 @@ def search(search):
     # This code is between me and God
     allKeys = list(set(aliasKeys) | set(tagKeys))
     listString = ','.join("'{0}'".format(x.replace("\'", "\'\'")) for x in allKeys)
-    cursor.execute(f"SELECT Key, UserId, Name, Description, Title, Occupation, Age, Race, Pronouns, Sexuality, Origin, Residence, Resources, ImageType FROM Character WHERE Name LIKE \"%{search}%\" OR Key in ({listString})")
+
+    return get_characters(cursor, f"Name LIKE \"%{search}%\" OR Key in ({listString})")
+
+
+def get_characters(cursor, conditions):
+    cursor.execute(f"{select_string} WHERE {conditions}")
     characters = cursor.fetchall()
 
     charactersJson = {}
     for character in characters:
-        charactersJson[character[0]] = buildCharacterJson(cursor, character)
+        charactersJson[character[0]] = build_character_json(cursor, character)
 
     return json.dumps({"characters": charactersJson})
 
 
-def buildCharacterJson(cursor, character):
+def build_character_json(cursor, character):
     cursor.execute(f"SELECT Name FROM User WHERE UserId == \"{character[1]}\"")
     user = cursor.fetchone()
     cursor.execute(f"SELECT Alias FROM CharacterAlias WHERE Key == \"{character[0]}\"")

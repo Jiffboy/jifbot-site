@@ -44,6 +44,8 @@
   color: var(--jifdarkgrey);
   background-color: var(--jiforange);
   margin-right: 10px;
+  margin-bottom: 5px;
+  margin-top: 5px;
   padding: 3px 5px;
   border-radius: 5px;
 }

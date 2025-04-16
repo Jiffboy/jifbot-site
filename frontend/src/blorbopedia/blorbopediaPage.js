@@ -7,19 +7,29 @@ export default function BlorbopediaPage() {
     const [data, setData] = React.useState([{}])
     const [message, setMessage] = React.useState("Search for Characters!")
     const [render, setRender] = React.useState(false)
+    const [button, setButton] = React.useState("submit")
 
     const handleSubmit = (event) => {
         event.preventDefault()
-        const formData = new FormData(event.target)
-        const character = formData.get("character")
+        var endpoint = ""
+        if (button == "submit"){
+            const formData = new FormData(event.target)
+            const character = formData.get("character")
+            endpoint = "/api/characters/search/" + character
+        } else if (button == "random") {
+            endpoint = "/api/characters/random"
+        }
 
-        fetch("/api/characters/search/" + character).then(
+        fetch(endpoint).then(
             res => res.json()
         ).then(
             data => {
                 setData(data)
                 const count = Object.keys(data.characters).length
-                if (count == 1 ) {
+                if (button == "random") {
+                    setMessage("")
+                    setRender(true)
+                } else if (count == 1 ) {
                     setMessage("Found 1 result")
                     setRender(true)
                 } else if (count >= 1) {
@@ -37,7 +47,8 @@ export default function BlorbopediaPage() {
         <div class='text-page-container'>
             <form className="submit-form" onSubmit={handleSubmit}>
                 <input className="submit-text" type="text" name="character"/>
-                <input className="submit-button" type="submit" value="Search"/>
+                <input className="submit-button" type="submit" value="submit" onClick={() => setButton("submit")}/>
+                <input className="submit-button" type="submit" value="random" onClick={() => setButton("random")}/>
             </form>
             <p className="submit-form">{message}</p>
             { render && Object.entries(data.characters).map(([key, arr]) =>

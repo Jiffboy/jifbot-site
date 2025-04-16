@@ -31,7 +31,8 @@ export default function Character(characterProps) {
         }
     }
 
-    const aliases = (characterProps.aliases == undefined) ? "" : " - AKA: " + characterProps.aliases.join(", ")
+    const dash = (characterProps.title == undefined) ? "" : " - "
+    const aliases = (characterProps.aliases == undefined) ? "" : dash + "AKA: " + characterProps.aliases.join(", ")
 
     return <div className='character-card'>
         <img src={characterProps.imageUrl}/>
