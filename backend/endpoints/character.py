@@ -24,7 +24,7 @@ def random():
 
     cursor.execute("SELECT Count() FROM Character")
     count = cursor.fetchone()[0]
-    target = randompy.randrange(0, count)
+    target = randompy.randrange(1, count + 1)
     return get_characters(cursor, f"_ROWID_ == {target}")
 
 
