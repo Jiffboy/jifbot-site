@@ -4,8 +4,6 @@
 }
 
 .submit-text {
-  background-color: var(--jiflightgrey);
-  color: white;
   border: 2px solid var(--jifdarkgrey);
   height: 20px;
   padding: 5px 12px;
@@ -22,6 +20,19 @@
 
 .submit-button:hover {
     background-color: var(--jiflightorange);
+}
+
+.submit-options-div {
+  padding-top: 10px;
+}
+
+.submit-option-label {
+  padding-right: 20px;
+}
+
+.submit-option-radio {
+  accent-color: var(--jiforange);
+  vertical-align: text-top;
 }
 
 .character-card {

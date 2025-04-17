@@ -44,8 +44,20 @@ def search(search):
     return get_characters(cursor, f"Name LIKE \"%{search}%\" OR Key in ({listString})")
 
 
+@character_endpoint.route('/api/characters/author/<author>', methods=['GET'])
+def author(author):
+    connection = sqlite3.connect(os.getenv('JIFBOT_DB'))
+    cursor = connection.cursor()
+
+    cursor.execute(f"SELECT UserId FROM User WHERE Name LIKE \"%{author}%\"")
+    authors = [x[0] for x in cursor.fetchall()]
+    authorString = ','.join("'{0}'".format(x) for x in authors)
+
+    return get_characters(cursor, f"UserId in ({authorString})")
+
+
 def get_characters(cursor, conditions):
-    cursor.execute(f"{select_string} WHERE {conditions}")
+    cursor.execute(f"{select_string} WHERE {conditions} ORDER BY Name ASC")
     characters = cursor.fetchall()
 
     charactersJson = {}

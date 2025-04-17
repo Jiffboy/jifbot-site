@@ -8,14 +8,20 @@ export default function BlorbopediaPage() {
     const [message, setMessage] = React.useState("Search for Characters!")
     const [render, setRender] = React.useState(false)
     const [button, setButton] = React.useState("submit")
+    const [option, setOption] = React.useState("character")
 
     const handleSubmit = (event) => {
         event.preventDefault()
         var endpoint = ""
         if (button == "submit"){
             const formData = new FormData(event.target)
-            const character = formData.get("character")
-            endpoint = "/api/characters/search/" + character
+            const text = formData.get("text")
+            if (option == "character") {
+                endpoint = "/api/characters/search/" + text
+            } else if (option == "author") {
+                endpoint = "/api/characters/author/" + text
+            }
+
         } else if (button == "random") {
             endpoint = "/api/characters/random"
         }
@@ -43,12 +49,38 @@ export default function BlorbopediaPage() {
         )
     }
 
+    const handleRadio = (event) => {
+        setOption(event.target.value)
+    }
+
     return (
         <div class='text-page-container'>
             <form className="submit-form" onSubmit={handleSubmit}>
-                <input className="submit-text" type="text" name="character"/>
-                <input className="submit-button" type="submit" value="submit" onClick={() => setButton("submit")}/>
+                <input className="submit-text" type="text" name="text"/>
+                <input className="submit-button" type="submit" value="search" onClick={() => setButton("submit")}/>
                 <input className="submit-button" type="submit" value="random" onClick={() => setButton("random")}/>
+                <div className="submit-options-div">
+                    <input
+                        className="submit-option-radio"
+                        type="radio"
+                        id="character"
+                        name="options"
+                        value="character"
+                        onChange={handleRadio}
+                        checked={option === "character"}
+                    />
+                    <label className="submit-option-label" for="character">Character</label>
+                    <input
+                        className="submit-option-radio"
+                        type="radio"
+                        id="author"
+                        name="options"
+                        value="author"
+                        onChange={handleRadio}
+                        checked={option === "author"}
+                    />
+                    <label className="submit-option-label" for="author">Author</label>
+                </div>
             </form>
             <p className="submit-form">{message}</p>
             { render && Object.entries(data.characters).map(([key, arr]) =>
