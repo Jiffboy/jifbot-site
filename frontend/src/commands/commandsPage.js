@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import Select from 'react-select'
+import Selector from '../common/selector'
 import Command from './command'
 import LoadingSpinner from '../common/loadingSpinner'
 import './css/command.css'
@@ -36,21 +36,11 @@ export default function CommandsPage() {
             ) : (
                 <div>
                     <div className='category-select'>
-                        <Select
-                            onChange={e => setCurrCategory(e['value'])}
-                            defaultValue={{value: 'all', label: 'All Categories'}}
+                        <Selector
+                            onChangeCall={e => setCurrCategory(e['value'])}
                             options={categories}
-                            theme={(theme) => ({
-                                ...theme,
-                                backgroundColor: '#15161c',
-                                colors: {
-                                    ...theme.colors,
-                                    primary25: '#ffa200',
-                                    primary: '#ffe199',
-                                    neutral0: '#15161c',
-                                },
-                            })}
-                            styles={styles}
+                            defaultValue='all'
+                            defaultLabel='All Categories'
                         />
                     </div>
                     {Object.entries(commands.commands).map(([key, arr]) =>

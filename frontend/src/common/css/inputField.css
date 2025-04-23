@@ -1,0 +1,29 @@
+.submit-text {
+  border: 1px solid white;
+  -webkit-transition: 0.5s;
+  background-color: var(--jifdarkgrey);
+  color: white;
+  height: 20px;
+  padding: 5px 12px;
+  font-family: "Smallest Pixel-7";
+  border-radius: 5px;
+  outline: none;
+}
+
+.submit-text:focus {
+  border: 1px solid var(--jiflightorange);
+}
+
+.submit-text-big:focus {
+  border: 1px solid var(--jiflightorange);
+}
+
+.submit-text-label {
+  color: var(--jiforange);
+  margin-bottom: 5px;
+}
+
+.submit-text-container {
+  display: inline-block;
+  margin: 10px;
+}

@@ -3,7 +3,7 @@
     color: var(--jiforange);
 }
 
-a.button {
+.invite-button {
     margin: 0 auto;
     display: block;
     background-color: var(--jiforange);
@@ -17,7 +17,7 @@ a.button {
     width: 80px;
 }
 
-a.button:hover {
+.invite-button:hover {
     background-color: var(--jiflightorange);
 }
 

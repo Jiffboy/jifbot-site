@@ -1,12 +1,13 @@
-from flask import Blueprint
+from flask import Blueprint, request, jsonify
 import sqlite3
 import os
 import json
+import urllib.request
 import random as randompy
 
 character_endpoint = Blueprint('character_endpoint', __name__)
 
-select_string = "SELECT Key, UserId, Name, Description, Title, Occupation, Age, Race, Pronouns, Sexuality, Origin, Residence, Resources, ImageType FROM Character"
+fields = "Key, UserId, Name, Description, Title, Occupation, Age, Race, Pronouns, Sexuality, Origin, Residence, Resources, ImageType"
 
 
 @character_endpoint.route('/api/characters/<key>', methods=['GET'])
@@ -56,8 +57,72 @@ def author(author):
     return get_characters(cursor, f"UserId in ({authorString})")
 
 
+@character_endpoint.route('/api/characters/submit', methods=['POST'])
+def submit():
+    connection = sqlite3.connect(os.getenv('JIFBOT_DB'))
+    cursor = connection.cursor()
+    f = request.form
+    image = None
+    ext = None
+
+    if 'image' in request.files:
+        file = request.files['image']
+        ext = file.filename.rsplit('.', 1)[1].lower()
+        image = file.read()
+
+    headers = {
+        "Authorization": f"{f['tokenType']} {f['accessToken']}",
+        "User-Agent": "MyDiscordApp (https://jifbot.com, v1.0)"
+    }
+
+    req = urllib.request.Request('https://discord.com/api/users/@me', headers=headers)
+    with urllib.request.urlopen(req) as response:
+        data = json.loads(response.read().decode())
+        userId = data['id']
+
+    target = cursor.execute(f"SELECT UserId FROM Character WHERE Key = \"{f['originalKey']}\"", )
+    key = target.fetchone()
+    update = key is not None
+
+    if update and key[0] != int(userId):
+        return jsonify({"error": "Using key for other user."}), 403
+
+    values = (f['key'],
+              userId,
+              f['name'],
+              f['description'],
+              f['title'],
+              f['occupation'],
+              f['age'],
+              f['race'],
+              f['pronouns'],
+              f['sexuality'],
+              f['origin'],
+              f['residence'],
+              f['resources'],
+              ext,
+              image,
+              1)
+    template = "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+    if update:
+        cursor.execute("""
+            UPDATE Character
+            SET Key = ?, UserId = ?, Name = ?, Description = ?, Title = ?, Occupation = ?, Age = ?, Race = ?, 
+            Pronouns = ?, Sexuality = ?, Origin = ?, Residence = ?, Resources = ?, ImageType = ?, Image = ?, 
+            CompactImage = ?
+            WHERE Key = ?
+        """, values + (f['originalKey'],))
+    else:
+        cursor.execute(f"INSERT INTO Character ({fields}, Image, CompactImage) VALUES {template}", values)
+    connection.commit()
+    connection.close()
+
+    response = {'message': 'Data received'}
+    return json.dumps(response)
+
+
 def get_characters(cursor, conditions):
-    cursor.execute(f"{select_string} WHERE {conditions} ORDER BY Name ASC")
+    cursor.execute(f"SELECT {fields} FROM Character WHERE {conditions} ORDER BY Name ASC")
     characters = cursor.fetchall()
 
     charactersJson = {}
@@ -78,8 +143,8 @@ def build_character_json(cursor, character):
     tags = "" if len(tags) == 0 else [tag[0] for tag in tags]
 
     image = ""
-    if character[13] is not None:
-        image = f"https://jifbot.com/img/character/{character[0]}.{character[13]}"
+    if character[13] is not None and character[13] != "":
+        image = f"{request.host_url}img/character/{character[0]}.{character[13]}"
 
     dict = {
         "name": character[2],

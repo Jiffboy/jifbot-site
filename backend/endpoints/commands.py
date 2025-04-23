@@ -30,7 +30,7 @@ def commands():
                     "required": param[3]
                 }
 
-    cursor.execute(f"SELECT DISTINCT Category FROM Command ASC")
+    cursor.execute(f"SELECT DISTINCT Category FROM Command ORDER BY Category ASC")
     categories = cursor.fetchall()
     categorylist = []
     for category in categories:

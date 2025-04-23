@@ -1,13 +1,27 @@
+.page-container {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.page-button {
+    display: inline-grid;
+    background-color: var(--jiforange);
+    border: none;
+    color: var(--jifgrey);
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    font-family: "Smallest Pixel-7";
+}
+
+.edit-button:hover {
+    background-color: var(--jiflightorange);
+}
+
 .submit-form {
   text-align: center;
   padding-top: 10px;
-}
-
-.submit-text {
-  border: 2px solid var(--jifdarkgrey);
-  height: 20px;
-  padding: 5px 12px;
-  font-family: "Smallest Pixel-7";
 }
 
 .submit-button {
@@ -16,6 +30,7 @@
     font-family: "Smallest Pixel-7";
     background-color: var(--jiforange);
     border: 2px solid var(--jifdarkgrey);
+    direction: ltr;
 }
 
 .submit-button:hover {

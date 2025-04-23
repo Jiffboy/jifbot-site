@@ -12,7 +12,7 @@ export default function HomePage() {
     return <div className="text-page-container">
         <h1 className = "home-header">Welcome to Jif Bot</h1>
         <p className = "home-welcome">A shitpost bot turned personal assistant. Designed specifically to meet my own needs, Jif Bot has various functionality to aid in discussion, provide basic tools, and bolsters some additional goodies that nobody wants or needs! Feel free to add my son to your server and give it a try! </p>
-        <a href="https://discord.com/oauth2/authorize?client_id=315569278101225483" class="button">Invite me!</a>
+        <a className = "invite-button" href="https://discord.com/oauth2/authorize?client_id=315569278101225483">Invite me!</a>
         <Cell title = "In-App Lookups" description = "Experience the thrill of being able to pull up information to help contribute to a conversation without having to use Google!" list = {["English Dictionary", "Urban Dictionary", "League of Legends Stats", "Movies", "YouTube"]} image = {lookupImg} left = {true}/>
         <Cell title = "Decision Making" description = "Free your soul from the crushing weight of indecision by allowing rng to dictate your fate!" list = {["Randomly choose an item from a list", "Shake a magic 8 ball", "Distribute people into teams", "Roll dice"]} image = {decisionImg} left = {false}/>
         <Cell title = "General Tooling" description = "Basic functionality done by other bots, but with a cute lil fox!" list = {["Set timers to remind yourself and others", "Set up an alerts channel to post event reports (user join/leave etc)", "Post a message to allow users to assign themselves roles", "Fetch user avatars"]} image = {toolImg} left = {true}/>

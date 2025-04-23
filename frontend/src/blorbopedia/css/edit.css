@@ -1,0 +1,84 @@
+.user-container {
+    text-align: center;
+}
+
+.user-name {
+    display: inline-flex;
+    font-size: 30px;
+    align-items: center;
+}
+
+.user-img {
+    display: inline-flex;
+    height: 2em;
+    margin-right: 20px;
+}
+
+.character-select {
+    margin: auto;
+    margin-bottom: 20px;
+    text-align: center;
+    width: 40%;
+}
+
+.submit-form {
+  text-align: center;
+  padding-top: 10px;
+}
+
+.upper-fields {
+  display: flex;
+  align-items: center; /* Vertically center items */
+}
+
+.field-inputs {
+    display: inline-block;
+    width: 60%;
+}
+
+.image-upload {
+    width: 40%;
+    height: 100%;
+}
+
+.file-upload{
+    display:block;
+    margin: 10px 0;
+}
+
+.image {
+    object-fit: contain;
+    display: block;
+    max-width: 90%;
+    height: 90%;
+    border: 1px solid white;
+    background-color: var(--jifdarkgrey);
+}
+
+.submit-text-big {
+  border: 1px solid white;
+  -webkit-transition: 0.5s;
+  background-color: var(--jifdarkgrey);
+  color: white;
+  height: 200px;
+  width: 90%;
+  padding: 5px 12px;
+  font-family: "Smallest Pixel-7";
+  border-radius: 5px;
+  outline: none;
+}
+
+.save-button {
+    margin: 20px auto;
+    height: 30px;
+    font-family: "Smallest Pixel-7";
+    background-color: var(--jiforange);
+    border: 2px solid var(--jifdarkgrey);
+    direction: ltr;
+    display: block;
+    text-align: center;
+}
+
+.save-button:hover {
+    background-color: var(--jiflightorange);
+}

@@ -53,56 +53,65 @@ export default function BlorbopediaPage() {
         setOption(event.target.value)
     }
 
+    // So it works for dev and prod
+    const returnUrl = window.location.protocol + "//" + window.location.host + "/blorbopedia/edit"
+    const endpoint = "https://discord.com/oauth2/authorize?client_id=315569278101225483&response_type=token&redirect_uri=" + returnUrl + "&scope=identify"
+
     return (
-        <div class='text-page-container'>
-            <form className="submit-form" onSubmit={handleSubmit}>
-                <input className="submit-text" type="text" name="text"/>
-                <input className="submit-button" type="submit" value="search" onClick={() => setButton("submit")}/>
-                <input className="submit-button" type="submit" value="random" onClick={() => setButton("random")}/>
-                <div className="submit-options-div">
-                    <input
-                        className="submit-option-radio"
-                        type="radio"
-                        id="character"
-                        name="options"
-                        value="character"
-                        onChange={handleRadio}
-                        checked={option === "character"}
-                    />
-                    <label className="submit-option-label" for="character">Character</label>
-                    <input
-                        className="submit-option-radio"
-                        type="radio"
-                        id="author"
-                        name="options"
-                        value="author"
-                        onChange={handleRadio}
-                        checked={option === "author"}
-                    />
-                    <label className="submit-option-label" for="author">Author</label>
-                </div>
-            </form>
-            <p className="submit-form">{message}</p>
-            { render && Object.entries(data.characters).map(([key, arr]) =>
-                <div>
-                    <Character
-                        name={arr.name}
-                        title={arr.title}
-                        occupation={arr.occupation}
-                        age={arr.age}
-                        race={arr.race}
-                        pronouns={arr.pronouns}
-                        sexuality={arr.sexuality}
-                        origin={arr.origin}
-                        residence={arr.residence}
-                        description={arr.description}
-                        tags={arr.tags}
-                        aliases={arr.aliases}
-                        author={arr.author}
-                        resources={arr.resources}
-                        imageUrl={arr.image}/>
-                </div>
-            )}
+        <div>
+            <div className="page-container">
+                <a href={endpoint} className="page-button">Edit Characters</a>
+            </div>
+            <div class='text-page-container'>
+                <form className="submit-form" onSubmit={handleSubmit}>
+                    <input className="submit-text" type="text" name="text"/>
+                    <input className="submit-button" type="submit" value="search" onClick={() => setButton("submit")}/>
+                    <input className="submit-button" type="submit" value="random" onClick={() => setButton("random")}/>
+                    <div className="submit-options-div">
+                        <input
+                            className="submit-option-radio"
+                            type="radio"
+                            id="character"
+                            name="options"
+                            value="character"
+                            onChange={handleRadio}
+                            checked={option === "character"}
+                        />
+                        <label className="submit-option-label" for="character">Character</label>
+                        <input
+                            className="submit-option-radio"
+                            type="radio"
+                            id="author"
+                            name="options"
+                            value="author"
+                            onChange={handleRadio}
+                            checked={option === "author"}
+                        />
+                        <label className="submit-option-label" for="author">Author</label>
+                    </div>
+                </form>
+                <p className="submit-form">{message}</p>
+                { render && Object.entries(data.characters).map(([key, arr]) =>
+                    <div>
+                        <Character
+                            name={arr.name}
+                            title={arr.title}
+                            occupation={arr.occupation}
+                            age={arr.age}
+                            race={arr.race}
+                            pronouns={arr.pronouns}
+                            sexuality={arr.sexuality}
+                            origin={arr.origin}
+                            residence={arr.residence}
+                            description={arr.description}
+                            tags={arr.tags}
+                            aliases={arr.aliases}
+                            author={arr.author}
+                            resources={arr.resources}
+                            imageUrl={arr.image}/>
+                    </div>
+                )}
+            </div>
 		</div>
 		)
 }
