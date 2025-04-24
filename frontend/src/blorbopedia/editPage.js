@@ -1,13 +1,26 @@
 import React, {useState, useEffect} from 'react'
+import { NavLink } from 'react-router-dom'
 import './css/edit.css'
 import Selector from '../common/selector'
 import InputField from '../common/inputField'
+import BigInputField from '../common/bigInputField'
 
 
 export default function EditPage() {
     const params = new URLSearchParams(window.location.hash.slice(1))
-    const accessToken = params.get('access_token')
-    const tokenType = params.get('token_type')
+    const accessToken = params.get('access_token') ?? sessionStorage.getItem('access_token')
+    const tokenType = params.get('token_type') ?? sessionStorage.getItem('token_type')
+
+    if (accessToken != null && tokenType != null) {
+        sessionStorage.setItem('access_token', accessToken)
+        sessionStorage.setItem('token_type', tokenType)
+    }
+
+
+    // So it works for dev and prod
+    const returnUrl = window.location.protocol + "//" + window.location.host + "/blorbopedia/edit"
+    const endpoint = "https://discord.com/oauth2/authorize?client_id=315569278101225483&response_type=token&redirect_uri=" + returnUrl + "&scope=identify"
+
     const [username, setUsername] = useState("")
     const [globalName, setGlobalName] = useState("")
     const [avatar, setAvatar] = useState("")
@@ -209,8 +222,14 @@ export default function EditPage() {
     return (
         <div>
             <div className="page-container">
-                <a href="/blorbopedia" className="page-button">Browse Characters</a>
+                <NavLink to="/blorbopedia" className='page-button'>Browse Characters</NavLink>
             </div>
+            {accessToken == null || tokenType == null ?
+            <div class='text-page-container'>
+                <div className="page-container">
+                <a href={endpoint} className="sign-in-button">Please sign in to continue</a>
+                </div>
+            </div> :
             <div class='text-page-container'>
                 <div className='user-container'>
                     <p className="user-name">
@@ -257,17 +276,9 @@ export default function EditPage() {
                             <input className="file-upload" type="file" accept="image/*" onChange={uploadImage}/>
                         </div>
                     </div>
-                    <p className="submit-text-label">Description</p>
-                    <textarea
-                        className="submit-text-big"
-                        type="text"
-                        name="name"
-                        value={description}
-                        onChange={e => setDescription(e.target.value)}
-                        maxLength={10}
-                    />
+                    <BigInputField value={description} valueSetter={setDescription}/>
                 </form>
-            </div>
+            </div>}
         </div>
     )
 }

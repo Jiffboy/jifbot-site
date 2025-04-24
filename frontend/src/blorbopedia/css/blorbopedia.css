@@ -3,6 +3,7 @@
   margin-bottom: 50px;
 }
 
+.sign-in-button,
 .page-button {
     display: inline-grid;
     background-color: var(--jiforange);
@@ -14,6 +15,15 @@
     font-size: 16px;
     font-family: "MedodicaRegular";
     font-weight: bold;
+}
+
+.sign-in-button:hover,
+.page-button:hover {
+    background-color: var(--jiflightorange);
+}
+
+.sign-in-button {
+    margin-top: 25vh;
 }
 
 .edit-button:hover {

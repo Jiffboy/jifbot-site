@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react'
 import '../common/css/textPageContainer.css'
 import LoadingSpinner from '../common/loadingSpinner'
 import Character from './character'
+import { NavLink } from 'react-router-dom'
 
 export default function BlorbopediaPage() {
     const [data, setData] = React.useState([{}])
@@ -53,14 +54,10 @@ export default function BlorbopediaPage() {
         setOption(event.target.value)
     }
 
-    // So it works for dev and prod
-    const returnUrl = window.location.protocol + "//" + window.location.host + "/blorbopedia/edit"
-    const endpoint = "https://discord.com/oauth2/authorize?client_id=315569278101225483&response_type=token&redirect_uri=" + returnUrl + "&scope=identify"
-
     return (
         <div>
             <div className="page-container">
-                <a href={endpoint} className="page-button">Edit Characters</a>
+                <NavLink to="/blorbopedia/edit" className='page-button'>Edit Characters</NavLink>
             </div>
             <div class='text-page-container'>
                 <form className="submit-form" onSubmit={handleSubmit}>
