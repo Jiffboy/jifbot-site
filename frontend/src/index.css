@@ -1,10 +1,10 @@
 @font-face {
-	font-family: "Smallest Pixel-7";
-	src: url("./resources/Smallest Pixel-7.woff") format('woff');
+	font-family: "MedodicaRegular";
+	src: url("./resources/MedodicaRegular.otf") format('opentype');
 }
 
 html {
-    font-family: "Smallest Pixel-7";
+    font-family: "MedodicaRegular";
     background-color: #2c2e3a;
     color: white;
     scrollbar-gutter: stable;

@@ -4,7 +4,7 @@ interface fieldProps {
     field: String;
     value: String;
     valueSetter: () => void;
-    required: Boolean;
+    required: false;
 }
 
 export default function InputField(fieldProps) {
@@ -18,6 +18,7 @@ export default function InputField(fieldProps) {
                 autocomplete="off"
                 value={fieldProps.value}
                 onChange={e => fieldProps.valueSetter(e.target.value)}
+                required={fieldProps.required}
             />
         </div>
     )

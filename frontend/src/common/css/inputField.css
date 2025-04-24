@@ -5,7 +5,8 @@
   color: white;
   height: 20px;
   padding: 5px 12px;
-  font-family: "Smallest Pixel-7";
+  font-family: "MedodicaRegular";
+  font-size: 16px;
   border-radius: 5px;
   outline: none;
 }
@@ -20,7 +21,7 @@
 
 .submit-text-label {
   color: var(--jiforange);
-  margin-bottom: 5px;
+  margin: 5px auto;
 }
 
 .submit-text-container {

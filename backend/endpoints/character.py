@@ -23,10 +23,10 @@ def random():
     connection = sqlite3.connect(os.getenv('JIFBOT_DB'))
     cursor = connection.cursor()
 
-    cursor.execute("SELECT Count() FROM Character")
-    count = cursor.fetchone()[0]
-    target = randompy.randrange(1, count + 1)
-    return get_characters(cursor, f"_ROWID_ == {target}")
+    cursor.execute("SELECT Key FROM Character ORDER BY RANDOM() LIMIT 1")
+    target = cursor.fetchone()[0]
+
+    return get_characters(cursor, f"Key == \"{target}\"")
 
 
 @character_endpoint.route('/api/characters/search/<search>', methods=['GET'])
@@ -57,6 +57,22 @@ def author(author):
     return get_characters(cursor, f"UserId in ({authorString})")
 
 
+@character_endpoint.route('/api/characters/delete', methods=['POST'])
+def delete():
+    data = request.get_json()
+    user_id, username = get_discord_info(data['tokenType'], data['accessToken'])
+
+    connection = sqlite3.connect(os.getenv('JIFBOT_DB'))
+    cursor = connection.cursor()
+
+    cursor.execute("DELETE FROM Character WHERE Key = ? AND UserId = ?", (data['key'], user_id))
+
+    connection.commit()
+    connection.close()
+
+    return json.dumps({"message": "Deleted successfully"})
+
+
 @character_endpoint.route('/api/characters/submit', methods=['POST'])
 def submit():
     connection = sqlite3.connect(os.getenv('JIFBOT_DB'))
@@ -70,25 +86,27 @@ def submit():
         ext = file.filename.rsplit('.', 1)[1].lower()
         image = file.read()
 
-    headers = {
-        "Authorization": f"{f['tokenType']} {f['accessToken']}",
-        "User-Agent": "MyDiscordApp (https://jifbot.com, v1.0)"
-    }
+    user_id, username = get_discord_info(f['tokenType'], f['accessToken'])
 
-    req = urllib.request.Request('https://discord.com/api/users/@me', headers=headers)
-    with urllib.request.urlopen(req) as response:
-        data = json.loads(response.read().decode())
-        userId = data['id']
+    # Keep the table up to date!
+    cursor.execute("""
+        INSERT INTO User (UserId, Name, Number)
+        VALUES (?, ?, ?)
+        ON CONFLICT(UserId) DO UPDATE SET
+            UserId = excluded.UserId,
+            Name = excluded.Name,
+            Number = excluded.Number
+    """, (user_id, username, 0))
 
     target = cursor.execute(f"SELECT UserId FROM Character WHERE Key = \"{f['originalKey']}\"", )
     key = target.fetchone()
     update = key is not None
 
-    if update and key[0] != int(userId):
+    if update and key[0] != int(user_id):
         return jsonify({"error": "Using key for other user."}), 403
 
     values = (f['key'],
-              userId,
+              user_id,
               f['name'],
               f['description'],
               f['title'],
@@ -104,21 +122,29 @@ def submit():
               image,
               1)
     template = "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
-    if update:
-        cursor.execute("""
-            UPDATE Character
-            SET Key = ?, UserId = ?, Name = ?, Description = ?, Title = ?, Occupation = ?, Age = ?, Race = ?, 
-            Pronouns = ?, Sexuality = ?, Origin = ?, Residence = ?, Resources = ?, ImageType = ?, Image = ?, 
-            CompactImage = ?
-            WHERE Key = ?
-        """, values + (f['originalKey'],))
-    else:
-        cursor.execute(f"INSERT INTO Character ({fields}, Image, CompactImage) VALUES {template}", values)
+    try:
+        if update:
+            cursor.execute("""
+                UPDATE Character
+                SET Key = ?, UserId = ?, Name = ?, Description = ?, Title = ?, Occupation = ?, Age = ?, Race = ?, 
+                Pronouns = ?, Sexuality = ?, Origin = ?, Residence = ?, Resources = ?, ImageType = ?, Image = ?, 
+                CompactImage = ?
+                WHERE Key = ?
+            """, values + (f['originalKey'],))
+        else:
+            cursor.execute(f"INSERT INTO Character ({fields}, Image, CompactImage) VALUES {template}", values)
+    except sqlite3.IntegrityError as e:
+        if "UNIQUE constraint failed" in str(e):
+            return jsonify({"error": "Key in use for other character"}), 403
+        else:
+            return jsonify({"error": "An unexpected error has occurred"}), 500
+    except Exception:
+        return jsonify({"error": "An unexpected error has occurred"}), 500
+
     connection.commit()
     connection.close()
 
-    response = {'message': 'Data received'}
-    return json.dumps(response)
+    return character(f['key'])
 
 
 def get_characters(cursor, conditions):
@@ -166,3 +192,14 @@ def build_character_json(cursor, character):
 
     return {k: v for k, v in dict.items() if v}
 
+
+def get_discord_info(tokenType, accessToken):
+    headers = {
+        "Authorization": f"{tokenType} {accessToken}",
+        "User-Agent": "MyDiscordApp (https://jifbot.com, v1.0)"
+    }
+
+    req = urllib.request.Request('https://discord.com/api/users/@me', headers=headers)
+    with urllib.request.urlopen(req) as response:
+        data = json.loads(response.read().decode())
+        return data['id'], data['username']

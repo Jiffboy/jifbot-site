@@ -29,6 +29,7 @@
 .upper-fields {
   display: flex;
   align-items: center; /* Vertically center items */
+  margin-bottom: 50px;
 }
 
 .field-inputs {
@@ -43,16 +44,19 @@
 
 .file-upload{
     display:block;
-    margin: 10px 0;
+    margin: 10px auto;;
 }
 
 .image {
     object-fit: contain;
+    margin: auto;
     display: block;
     max-width: 90%;
-    height: 90%;
+    height: 300px;
+    max-height: 300px;
     border: 1px solid white;
     background-color: var(--jifdarkgrey);
+    margin-top: 5px;
 }
 
 .submit-text-big {
@@ -63,22 +67,44 @@
   height: 200px;
   width: 90%;
   padding: 5px 12px;
-  font-family: "Smallest Pixel-7";
+  font-family: "MedodicaRegular";
+  font-size: 16px;
   border-radius: 5px;
   outline: none;
 }
 
+.buttons {
+    display: flex;
+    text-align: center;
+    justify-content: center;
+}
+
 .save-button {
-    margin: 20px auto;
+    margin-left: 20px;
     height: 30px;
-    font-family: "Smallest Pixel-7";
+    font-family: "MedodicaRegular";
+    font-size: 20px;
     background-color: var(--jiforange);
     border: 2px solid var(--jifdarkgrey);
-    direction: ltr;
-    display: block;
-    text-align: center;
 }
 
 .save-button:hover {
     background-color: var(--jiflightorange);
+}
+
+.error-text {
+    color: red;
+    font-size: 20px;
+    text-align: center;
+}
+
+.success-text {
+    color: green;
+    font-size: 20px;
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.image-buttons {
+    display: flex;
 }
