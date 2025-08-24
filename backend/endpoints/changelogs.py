@@ -16,6 +16,10 @@ def changelogs():
     currDate = ''
     currList = []
     for changelog in changelogs:
+        change = {
+            "type": changelog[2],
+            "change": changelog[1]
+        }
         # We've found all records for this date, push
         if changelog[0] != currDate:
             # If this is our first pass through, don't add to list
@@ -25,7 +29,7 @@ def changelogs():
                 jsondict[currDate] = currList
                 currDate = changelog[0]
                 currList = []
-        currList.append(changelog[1])
+        currList.append(change)
     jsondict[currDate] = currList
 
     return json.dumps({"changelogs": jsondict})

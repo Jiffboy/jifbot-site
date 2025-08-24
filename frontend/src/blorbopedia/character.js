@@ -35,11 +35,11 @@ export default function Character(characterProps) {
     const aliases = (characterProps.aliases == undefined) ? "" : dash + "AKA: " + characterProps.aliases.join(", ")
 
     return <div className='character-card'>
-        <img src={characterProps.imageUrl}/>
+        <img className='character-image-desktop' src={characterProps.imageUrl}/>
         <div className='character-info'>
             <p className='title'>{characterProps.title}{aliases}</p>
             <h1 className='name'>{characterProps.name}</h1>
-
+            <img className='character-image-mobile' src={characterProps.imageUrl}/>
             <div className='character-fields'>
                 <CharacterField field="Occupation" value={characterProps.occupation}/>
                 <CharacterField field="Race" value={characterProps.race}/>
@@ -56,7 +56,7 @@ export default function Character(characterProps) {
                 <a className="character-link" target="_blank" href={characterProps.resources}>More information</a>
             }
 
-            {characterProps.tags != undefined &&
+            { characterProps.tags != undefined &&
                 Object.entries(characterProps.tags).map(([key, arr]) =>
                     <div className='tags'>
                         <p className='tag'>{arr}</p>

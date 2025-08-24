@@ -2,20 +2,13 @@ import React, {useState, useEffect} from 'react'
 import Selector from '../common/selector'
 import Command from './command'
 import LoadingSpinner from '../common/loadingSpinner'
+import '../common/css/textPageContainer.css'
 import './css/command.css'
 
 export default function CommandsPage() {
 	const[commands, setCommands] = useState([{}]);
-	const[commandComponents, setCommandComponents] = useState([]);
 	const[currCategory, setCurrCategory] = useState('all');
 	const[categories, setCategories] = useState([{value: 'all', label: 'All Categories'}]);
-
-	const styles = {
-        singleValue:(provided:any) => ({
-          ...provided,
-          color:'white',
-        }),
-  }
 
 	useEffect(() => {
 		fetch("/api/commands").then(
@@ -30,35 +23,39 @@ export default function CommandsPage() {
 	}, [])
 
 	return (
-		<div className='commands-page'>
-            {(typeof commands.commands === 'undefined') ? (
-                <LoadingSpinner/>
-            ) : (
-                <div>
-                    <div className='category-select'>
-                        <Selector
-                            onChangeCall={e => setCurrCategory(e['value'])}
-                            options={categories}
-                            defaultValue='all'
-                            defaultLabel='All Categories'
-                        />
-                    </div>
-                    {Object.entries(commands.commands).map(([key, arr]) =>
-                    <Command
-                        key={key}
-                        name={key}
-                        category={arr.category}
-                        description={arr.description}
-                        parameters={
-                            (typeof arr.parameters === 'undefined') ? (
-                                {}
-                            ) : (
-                                arr.parameters
-                            )}
-                        currCategory={currCategory}
-                    />)}
-                </div>
-            )}
+		<div className='text-page-container'>
+			<div className='commands-page'>
+				{(typeof commands.commands === 'undefined') ? (
+					<LoadingSpinner/>
+				) : (
+					<div>
+						<div className='category-select'>
+							<Selector
+								onChangeCall={e => setCurrCategory(e['value'])}
+								options={categories}
+								defaultValue='all'
+								defaultLabel='All Categories'
+							/>
+						</div>
+						<div className='commands-grid'>
+							{Object.entries(commands.commands).map(([key, arr]) =>
+							<Command
+								key={key}
+								name={key}
+								category={arr.category}
+								description={arr.description}
+								parameters={
+									(typeof arr.parameters === 'undefined') ? (
+										{}
+									) : (
+										arr.parameters
+									)}
+								currCategory={currCategory}
+							/>)}
+						</div>
+					</div>
+				)}
+			</div>
 		</div>
 	)
 }

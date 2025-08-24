@@ -9,6 +9,7 @@ export default function Footer() {
                 <p className="footer-text">Follow Me</p>
                 <NavLink to="https://bsky.app/profile/jifboy.bsky.social" className='footer-link'>Bluesky</NavLink>
                 <NavLink to="https://x.com/JifBoy" className='footer-link'>Twitter</NavLink>
+                <NavLink to="https://github.com/jiffboy" className='footer-link'>GitHub</NavLink>
             </nav>
             <nav className="footer-navbar">
                 <p className="footer-text">Legal Stuff</p>

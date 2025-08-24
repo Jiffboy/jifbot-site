@@ -1,14 +1,34 @@
 .text-page-container {
-    width: 60%;
-    @media (max-width: 1350px){
-        width: 90%;
-    }
+    /* Mobile-first approach: full width on mobile */
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
     background-color: var(--jifgrey);
     margin-left: auto;
     margin-right: auto;
-    padding-left: 25px;
-    padding-right: 25px;
+    padding-left: 15px;
+    padding-right: 15px;
     padding-top: 10px;
     padding-bottom: 30px;
     min-height: 50vh;
+    
+    /* Prevent horizontal overflow */
+    overflow-x: hidden;
+}
+
+/* Tablet and larger screens */
+@media (min-width: 768px) {
+    .text-page-container {
+        width: 90%;
+        padding-left: 25px;
+        padding-right: 25px;
+    }
+}
+
+/* Desktop screens */
+@media (min-width: 1350px) {
+    .text-page-container {
+        width: 65%;
+        max-width: 1400px;
+    }
 }

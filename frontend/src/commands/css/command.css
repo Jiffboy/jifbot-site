@@ -1,6 +1,15 @@
 .commands-page {
     margin: auto;
     text-align: center;
+    width: 100%;
+}
+
+.commands-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    margin-top: 20px;
+    width: 100%;
 }
 
 .command-title {
@@ -13,14 +22,15 @@
 }
 
 .command-card {
-    background-color: var(--jifgrey);
+    background-color: var(--jiflightgrey);
     padding-bottom: 10px;
     box-shadow: 0 3px var(--jifdarkgrey);
     border-radius: 20px;
-    margin: 10px;
-    width: 600px;
-    display: inline-grid;
+    margin: 0;
+    width: 100%;
+    max-width: 100%;
     text-align: left;
+    box-sizing: border-box;
 }
 
 .command-description {
@@ -41,8 +51,28 @@
 }
 
 .category-select {
-    margin: auto;
-    margin-bottom: 20px;
+    margin: 20px auto;
     text-align: center;
-    width: 30%;
+    width: 100%;
+    max-width: 400px;
+}
+
+/* Tablet and larger screens - 2 columns */
+@media (min-width: 768px) {
+    .commands-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 25px;
+    }
+    
+    .category-select {
+        width: 50%;
+        max-width: 500px;
+    }
+}
+
+/* Large desktop screens - maintain 2 columns but with better spacing */
+@media (min-width: 1200px) {
+    .commands-grid {
+        gap: 30px;
+    }
 }

@@ -1,6 +1,14 @@
 .home-header {
     text-align: center;
     color: var(--jiforange);
+    font-size: 40px;
+    margin-bottom: 0px;
+}
+
+.home-subheader {
+    text-align: center;
+    color: var(--jiflightorange);
+    margin-top: 5px;
 }
 
 .invite-button {
@@ -10,6 +18,7 @@
     border: none;
     color: var(--jifgrey);
     padding: 15px 32px;
+    margin-bottom: 50px;
     text-align: center;
     text-decoration: none;
     font-size: 16px;
@@ -30,25 +39,90 @@
     font-size: 20;
 }
 
-.cell {
+.home-divider {
+    border: none;
+    height: 4px;
+    background-color: var(--jiflightgrey);
+    width: 80%;
+}
+
+/* Cards Container */
+.cards-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+/* Feature Cards - Modern styling */
+.feature-card {
     background-color: var(--jifdarkgrey);
-    padding: 10px 10px 10px 10px;
-    margin-top: 70px;
+    border-radius: 12px;
+    padding: 2rem;
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    align-items: center;
 }
 
-.cell-header {
+
+.feature-content {
+    text-align: center;
+}
+
+.feature-title {
+    font-size: 1.5rem;
     color: var(--jiflightorange);
+    margin-bottom: 1rem;
+    font-weight: 600;
 }
 
-.cell-image{
-    display: block;
-    object-fit: contain;
-    max-width: 40%;
+.feature-description {
+    color: #e0e0e0;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
 }
 
-.cell-text{
-    padding-left: 10px;
-    padding-right: 10px;
+.feature-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.feature-item {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-bottom: 0.75rem;
+    color: #c0c0c0;
+    font-size: 0.95rem;
+}
+
+.feature-bullet {
+    color: var(--jiforange);
+    margin-right: 0.5rem;
+    font-weight: bold;
+}
+
+/* Tablet styles */
+@media (min-width: 768px) {
+    .cards-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2.5rem;
+    }
+    
+    .feature-content {
+        text-align: left;
+    }
+    
+    .feature-item {
+        justify-content: flex-start;
+    }
+}
+
+/* Desktop styles */
+@media (min-width: 1200px) {
+    .cards-container {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 3rem;
+    }
 }

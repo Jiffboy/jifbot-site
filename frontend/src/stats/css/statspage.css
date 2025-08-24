@@ -1,6 +1,9 @@
 .stats-page-container {
-    display: inline;
+    display: block;
     text-align: center;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
 }
 
 .donut-line{
@@ -8,29 +11,65 @@
     flex-wrap: wrap;
     text-align: center;
     width: 100%;
+    justify-content: center;
+    gap: 20px;
 }
 
 .donut-container {
-    min-width: 400px;
-    width: 40%;
+    width: 100%;
+    max-width: 400px;
+    min-width: 280px;
     text-align: center;
-    display: inline;
     margin: 0 auto;
-    margin-bottom: 100px;
+    margin-bottom: 50px;
+    box-sizing: border-box;
 }
 
 .line-container {
     position: relative;
-    min-width: 400px;
+    width: 100%;
+    min-width: 280px;
     text-align: center;
     margin: 0 auto;
-    margin-bottom: 100px;
+    margin-bottom: 50px;
+    box-sizing: border-box;
 }
 
 .bar-container {
     position: relative;
-    min-width: 400px;
+    width: 100%;
+    min-width: 280px;
     text-align: center;
     margin: 0 auto;
-    margin-bottom: 100px;
+    margin-bottom: 50px;
+    box-sizing: border-box;
+}
+
+/* Mobile specific adjustments */
+@media (max-width: 767px) {
+    .donut-line {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .donut-container {
+        width: 100%;
+        min-width: 250px;
+        margin-bottom: 30px;
+    }
+    
+    .line-container,
+    .bar-container {
+        width: 100%;
+        min-width: 250px;
+        margin-bottom: 30px;
+    }
+}
+
+/* Tablet adjustments */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .donut-container {
+        width: 45%;
+        min-width: 300px;
+    }
 }

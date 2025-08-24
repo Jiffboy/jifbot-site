@@ -7,3 +7,11 @@
 .page-content {
     flex-grow: 1;
 }
+
+p {
+    font-size: 18px;
+}
+
+li {
+    font-size: 18px;
+}

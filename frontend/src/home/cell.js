@@ -1,25 +1,18 @@
 import React from 'react'
 
-interface cellProps {
-    title: String;
-    description: String;
-    list: [];
-    image: Component;
-    left: Boolean;
-}
-
-export default function Cell<cellProps>(props) {
-    return <div className="cell">
-        {!props.left && <img className="cell-image" src={props.image}/>}
-        <div className="cell-text">
-            <h1 className="cell-header">{props.title}</h1>
-            <p>{props.description}</p>
-            <ul>
+export default function Cell(props) {
+    return <div className="feature-card">
+        <div className="feature-content">
+            <h3 className="feature-title">{props.title}</h3>
+            <p className="feature-description">{props.description}</p>
+            <ul className="feature-list">
                 {props.list.map((item, index) => (
-                    <li key={index}>{item}</li>
+                    <li key={index} className="feature-item">
+                        <span className="feature-bullet">•</span>
+                        {item}
+                    </li>
                 ))}
             </ul>
         </div>
-        {props.left && <img className="cell-image" src={props.image}/>}
     </div>
 }
