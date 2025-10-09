@@ -10,6 +10,7 @@ import BlorbopediaPage from './blorbopedia/blorbopediaPage'
 import EditPage from './blorbopedia/editPage'
 import TitleLogo from './common/titleLogo'
 import Footer from './common/footer'
+import BlorboPage from './blorbopedia/blorboPage'
 import { Route, Routes } from "react-router-dom"
 import './App.css'
 
@@ -28,6 +29,7 @@ function App() {
                     <Route path="/privacy" element={<PrivacyPolicyPage/>}/>
                     <Route path="/blorbopedia" element={<BlorbopediaPage/>}/>
                     <Route path="/blorbopedia/edit" element={<EditPage/>}/>
+                    <Route path="/blorbopedia/:name" element={<BlorboPage/>}/>
                 </Routes>
             </div>
             <Footer/>
