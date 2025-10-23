@@ -6,6 +6,7 @@ import Character from "./character";
 export default function BlorboPage() {
     const { name } = useParams()
     const [data, setData] = React.useState(null)
+    const [characterKey, setCharacterKey] = React.useState(null)
     const [hasData, setHasData] = React.useState(false)
 
     if (!hasData) {
@@ -13,7 +14,9 @@ export default function BlorboPage() {
             res => res.json()
         ).then(
             data => {
-                setData(Object.values(data.characters)[0])
+                const key = Object.keys(data.characters)[0]
+                setCharacterKey(key)
+                setData(data.characters[key])
                 setHasData(true)
             }
         )
@@ -30,6 +33,7 @@ export default function BlorboPage() {
     return <div>
         <div className='text-page-container'>
             <Character
+                characterKey={characterKey}
                 name={data.name}
                 title={data.title}
                 occupation={data.occupation}

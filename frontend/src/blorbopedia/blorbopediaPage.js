@@ -32,6 +32,7 @@ export default function BlorbopediaPage() {
         ).then(
             data => {
                 setData(data)
+                console.log(data)
                 const count = Object.keys(data.characters).length
                 if (button == "random") {
                     setMessage("")
@@ -88,9 +89,10 @@ export default function BlorbopediaPage() {
                     </div>
                 </form>
                 <p className="submit-form">{message}</p>
-                { render && Object.entries(data.characters).map(([key, arr]) =>
+                { render && Object.entries(data.characters).map(([charKey, arr]) =>
                     <div>
                         <Character
+                            characterKey={charKey}
                             name={arr.name}
                             title={arr.title}
                             occupation={arr.occupation}
@@ -105,7 +107,8 @@ export default function BlorbopediaPage() {
                             aliases={arr.aliases}
                             author={arr.author}
                             resources={arr.resources}
-                            imageUrl={arr.image}/>
+                            imageUrl={arr.image}
+                            showOpenButton={true}/>
                     </div>
                 )}
             </div>

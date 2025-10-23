@@ -5,6 +5,7 @@ import json
 
 changelogs_endpoint = Blueprint('changelogs_endpoint', __name__)
 
+
 @changelogs_endpoint.route('/api/changelogs')
 def changelogs():
     connection = sqlite3.connect(os.getenv('JIFBOT_DB'))
