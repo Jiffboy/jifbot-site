@@ -38,7 +38,7 @@ export default function TermsOfServicePage() {
                 </li>
                 <li className='tos-list-item'>
                     <font color="#ffe199">Governing Law: </font>
-                    This Agreement shall be governed by and construed in accordance with the laws of the United States of America. Any dispute arising under or in connection with this Agreement shall be resolved by arbitration in accordance with the rules of [Your arbitration provider].
+                    This Agreement shall be governed by and construed in accordance with the laws of the United States of America. Any dispute arising under or in connection with this Agreement shall be resolved accordingly.
                 </li>
                 <li className='tos-list-item'>
                     <font color="#ffe199">Entire Agreement: </font>
