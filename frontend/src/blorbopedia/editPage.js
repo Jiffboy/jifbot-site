@@ -1,5 +1,6 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import { NavLink } from 'react-router-dom'
+import Cropper from 'react-easy-crop'
 import './css/edit.css'
 import Selector from '../common/selector'
 import InputField from '../common/inputField'
@@ -46,6 +47,14 @@ export default function EditPage() {
     const [description, setDescription] = useState("")
     const [imageUrl, setImageUrl] = useState("")
     const [image, setImage] = useState(null)
+
+    const fileInputRef = useRef(null)
+
+    const [cropSrc, setCropSrc] = useState(null)
+    const [showCropper, setShowCropper] = useState(false)
+    const [crop, setCrop] = useState({ x: 0, y: 0 })
+    const [zoom, setZoom] = useState(1)
+    const [croppedAreaPixels, setCroppedAreaPixels] = useState(null)
 
     useEffect(() => {
 		fetch('https://discord.com/api/users/@me', {
@@ -187,10 +196,42 @@ export default function EditPage() {
 
 	const uploadImage = (event) => {
         if (event.target.files && event.target.files.length > 0) {
-            const url = URL.createObjectURL(event.target.files[0])
-            setImageUrl(url)
-            setImage(event.target.files[0])
+            const reader = new FileReader()
+            reader.addEventListener('load', () => {
+                setCropSrc(reader.result)
+                setCrop({ x: 0, y: 0 })
+                setZoom(1)
+                setShowCropper(true)
+            })
+            reader.readAsDataURL(event.target.files[0])
+            event.target.value = ''
         }
+	}
+
+	const getCroppedImg = async (imageSrc, pixelCrop) => {
+        const image = new Image()
+        image.src = imageSrc
+        await new Promise((resolve) => { image.onload = resolve })
+        const canvas = document.createElement('canvas')
+        canvas.width = pixelCrop.width
+        canvas.height = pixelCrop.height
+        const ctx = canvas.getContext('2d')
+        ctx.drawImage(image, pixelCrop.x, pixelCrop.y, pixelCrop.width, pixelCrop.height, 0, 0, pixelCrop.width, pixelCrop.height)
+        return new Promise((resolve) => canvas.toBlob((blob) => resolve(blob), 'image/jpeg'))
+	}
+
+	const handleCropConfirm = async () => {
+        const blob = await getCroppedImg(cropSrc, croppedAreaPixels)
+        const file = new File([blob], 'character-image.jpg', { type: 'image/jpeg' })
+        setImage(file)
+        setImageUrl(URL.createObjectURL(blob))
+        setShowCropper(false)
+        setCropSrc(null)
+	}
+
+	const handleCropCancel = () => {
+        setShowCropper(false)
+        setCropSrc(null)
 	}
 
 	const deleteImage = (event) => {
@@ -221,6 +262,39 @@ export default function EditPage() {
 
     return (
         <div>
+            {showCropper && (
+                <div className="crop-modal-overlay">
+                    <div className="crop-modal">
+                        <p className="crop-title">Crop Image</p>
+                        <div className="crop-container">
+                            <Cropper
+                                image={cropSrc}
+                                crop={crop}
+                                zoom={zoom}
+                                aspect={1}
+                                onCropChange={setCrop}
+                                onZoomChange={setZoom}
+                                onCropComplete={(_, pixels) => setCroppedAreaPixels(pixels)}
+                            />
+                        </div>
+                        <div className="crop-controls">
+                            <input
+                                type="range"
+                                min={1}
+                                max={3}
+                                step={0.01}
+                                value={zoom}
+                                onChange={(e) => setZoom(Number(e.target.value))}
+                                className="crop-zoom-slider"
+                            />
+                            <div className="crop-buttons">
+                                <input className="save-button" type="button" value="Upload" onClick={handleCropConfirm}/>
+                                <input className="save-button" type="button" value="Cancel" onClick={handleCropCancel}/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
             <div className="page-container">
                 <NavLink to="/blorbopedia" className='page-button'>Browse Characters</NavLink>
             </div>
@@ -238,7 +312,7 @@ export default function EditPage() {
                     </p>
                 </div>
 
-                <div className='character-select'>
+                <div className='character-select-row'>
                     <Selector
                         onChangeCall={e => updateCharacter(e['value'], characterData[e['value']])}
                         options={characterOptions}
@@ -248,14 +322,10 @@ export default function EditPage() {
                         isDisabled={disableSelect}
                     />
                 </div>
+                <div className='new-button-row'>
+                    <input className="save-button" type="button" value="New" onClick={() => newCharacter()}/>
+                </div>
                 <form className="submit-form" onSubmit={handleSubmit}>
-                    <div className='buttons'>
-                        <input className="save-button" type="button" value="New" onClick={() => newCharacter()}/>
-                        <input className="save-button" type="submit" value="Save" onSubmit={() => handleSubmit()}/>
-                        <input className="save-button" type="button" value="Delete" onClick={() => deleteCharacter()}/>
-                    </div>
-                    <p className='error-text'>{error}</p>
-                    <p className='success-text'>{success}</p>
                     <div className='upper-fields'>
                         <div className="field-inputs">
                             <InputField field="Key *" value={key} valueSetter={setKey} required={true}/>
@@ -271,12 +341,21 @@ export default function EditPage() {
                             <InputField field="Resources" value={resources} valueSetter={setResources}/>
                         </div>
                         <div className="image-upload">
-                            {imageUrl != "" &&<input className="save-button" type="button" value="Delete" onClick={() => deleteImage()}/>}
-                            {imageUrl != "" && <img className="image" src={imageUrl}/>}
-                            <input className="file-upload" type="file" accept="image/*" onChange={uploadImage}/>
+                            {imageUrl != "" ? <img className="image" src={imageUrl}/> : <div className="image-placeholder">No image</div>}
+                            <div className="image-buttons">
+                                <input className="save-button" type="button" value="Upload" onClick={() => fileInputRef.current.click()}/>
+                                {imageUrl != "" && <input className="save-button" type="button" value="Remove" onClick={() => deleteImage()}/>}
+                            </div>
+                            <input ref={fileInputRef} type="file" accept="image/*" onChange={uploadImage} style={{display: 'none'}}/>
                         </div>
                     </div>
                     <BigInputField value={description} valueSetter={setDescription}/>
+                    <p className='error-text'>{error}</p>
+                    <p className='success-text'>{success}</p>
+                    <div className='buttons'>
+                        <input className="save-button" type="submit" value="Save" onSubmit={() => handleSubmit()}/>
+                        <input className="save-button" type="button" value="Delete" onClick={() => deleteCharacter()}/>
+                    </div>
                 </form>
             </div>}
         </div>

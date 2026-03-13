@@ -1,6 +1,7 @@
 import React from 'react'
 import '../blorbopedia/css/blorbopedia.css'
 import CharacterField from './characterField'
+import defaultImg from '../resources/default.jpg'
 
 interface characterProps {
     characterKey: String;
@@ -87,21 +88,24 @@ export default function Character(characterProps) {
                 </button>
             )}
         </div>
-        <img className='character-image-desktop' src={characterProps.imageUrl}/>
-        <div className='character-info'>
-            <p className='title'>{characterProps.title}{aliases}</p>
-            <h1 className='name'>{characterProps.name}</h1>
-            <img className='character-image-mobile' src={characterProps.imageUrl}/>
-            <div className='character-fields'>
-                <CharacterField field="Occupation" value={characterProps.occupation}/>
-                <CharacterField field="Race" value={characterProps.race}/>
-                <CharacterField field="Age" value={characterProps.age}/>
-                <CharacterField field="Pronouns" value={characterProps.pronouns}/>
-                <CharacterField field="Sexuality" value={characterProps.sexuality}/>
-                <CharacterField field="Origin" value={characterProps.origin}/>
-                <CharacterField field="Residence" value={characterProps.residence}/>
+        <div className='character-top'>
+            <img className='character-image' src={characterProps.imageUrl || defaultImg}/>
+            <div className='character-header'>
+                <p className='title'>{characterProps.title}{aliases}</p>
+                <h1 className='name'>{characterProps.name}</h1>
+                <div className='character-fields'>
+                    <CharacterField field="Occupation" value={characterProps.occupation}/>
+                    <CharacterField field="Race" value={characterProps.race}/>
+                    <CharacterField field="Age" value={characterProps.age}/>
+                    <CharacterField field="Pronouns" value={characterProps.pronouns}/>
+                    <CharacterField field="Sexuality" value={characterProps.sexuality}/>
+                    <CharacterField field="Origin" value={characterProps.origin}/>
+                    <CharacterField field="Residence" value={characterProps.residence}/>
+                </div>
             </div>
+        </div>
 
+        <div className='character-bottom'>
             <p> {characterProps.description} </p>
 
             { characterProps.resources != undefined && isValidUrl(characterProps.resources) &&

@@ -14,12 +14,24 @@
     margin-right: 20px;
 }
 
-.character-select {
+.new-button-row {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 8px;
+}
+
+.character-select-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
     margin: 20px auto;
-    margin-bottom: 20px;
-    text-align: center;
-    width: 100%;
-    max-width: 400px;
+
+}
+
+.character-select-row > div {
+    flex: 1;
+    max-width: 300px;
 }
 
 .submit-form {
@@ -50,13 +62,28 @@
     margin: 10px auto;;
 }
 
+.image-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    margin-top: 5px;
+    max-width: 300px;
+    max-height: 300px;
+    aspect-ratio: 1 / 1;
+    border: 1px solid white;
+    background-color: var(--jifdarkgrey);
+    color: grey;
+    font-size: 18px;
+}
+
 .image {
-    object-fit: contain;
+    object-fit: cover;
     margin: auto;
     display: block;
-    max-width: 90%;
-    height: 300px;
+    max-width: 300px;
     max-height: 300px;
+    aspect-ratio: 1 / 1;
     border: 1px solid white;
     background-color: var(--jifdarkgrey);
     margin-top: 5px;
@@ -96,13 +123,70 @@
 
 .image-buttons {
     display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.crop-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.crop-modal {
+    background: var(--jifdarkgrey);
+    border: 2px solid var(--jiforange);
+    padding: 20px;
+    width: 90%;
+    max-width: 520px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.crop-title {
+    font-size: 22px;
+    margin: 0;
+}
+
+.crop-container {
+    position: relative;
+    width: 100%;
+    height: 350px;
+}
+
+.crop-controls {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.crop-zoom-slider {
+    width: 80%;
+    accent-color: var(--jiforange);
+    cursor: pointer;
+}
+
+.crop-buttons {
+    display: flex;
+    gap: 10px;
 }
 
 /* Tablet and larger screens */
 @media (min-width: 768px) {
-    .character-select {
-        width: 40%;
-        max-width: 500px;
+    .character-select-row {
+        max-width: 620px;
     }
     
     .upper-fields {
