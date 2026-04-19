@@ -37,15 +37,19 @@ def blorbo_page(name):
             return app.send_static_file("index.html")
 
         image = ""
-        if character[2] is not None and character[2] != "":
+        if character[3] is not None and character[3] != "":
             image = f"{request.host_url}img/character/{character[0]}.{character[3]}"
+        description = "[ No Description ]"
+        if character[2] is not None and character[2] != "":
+            description = character[2]
+
         url = f"{request.host_url}b/{character[0]}"
 
         return render_template(
             "blorbo_embed.html",
             key=character[0],
             name=character[1],
-            description=character[2],
+            description=description,
             image=image,
             url=url
         )
