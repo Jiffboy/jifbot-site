@@ -29,7 +29,7 @@ function App() {
                     <Route path="/privacy" element={<PrivacyPolicyPage/>}/>
                     <Route path="/blorbopedia" element={<BlorbopediaPage/>}/>
                     <Route path="/blorbopedia/edit" element={<EditPage/>}/>
-                    <Route path="/blorbopedia/:name" element={<BlorboPage/>}/>
+                    <Route path="/b/:name" element={<BlorboPage/>}/>
                 </Routes>
             </div>
             <Footer/>

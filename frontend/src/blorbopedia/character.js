@@ -37,7 +37,7 @@ export default function Character(characterProps) {
     }
 
     const getCharacterUrl = () => {
-        return `${window.location.origin}/blorbopedia/${encodeURIComponent(characterProps.characterKey)}`;
+        return `${window.location.origin}/b/${encodeURIComponent(characterProps.characterKey)}`;
     }
 
     const copyLinkToClipboard = () => {

@@ -3,7 +3,6 @@ import sqlite3
 import os
 import json
 import urllib.request
-import random as randompy
 
 character_endpoint = Blueprint('character_endpoint', __name__)
 
