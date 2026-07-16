@@ -89,10 +89,10 @@ export default function BlorbopediaPage() {
                     </div>
                 </form>
                 <p className="submit-form">{message}</p>
-                { render && Object.entries(data.characters).map(([charKey, arr]) =>
+                { render && Object.entries(data.characters).map(([charId, arr]) =>
                     <div>
                         <Character
-                            characterKey={charKey}
+                            characterId={charId}
                             name={arr.name}
                             title={arr.title}
                             occupation={arr.occupation}

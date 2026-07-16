@@ -4,7 +4,7 @@ import CharacterField from './characterField'
 import defaultImg from '../resources/default.jpg'
 
 interface characterProps {
-    characterKey: String;
+    characterId: String;
     name: String;
     title: String;
     occupation: String;
@@ -37,7 +37,7 @@ export default function Character(characterProps) {
     }
 
     const getCharacterUrl = () => {
-        return `${window.location.origin}/b/${encodeURIComponent(characterProps.characterKey)}`;
+        return `${window.location.origin}/b/${encodeURIComponent(characterProps.characterId)}`;
     }
 
     const copyLinkToClipboard = () => {

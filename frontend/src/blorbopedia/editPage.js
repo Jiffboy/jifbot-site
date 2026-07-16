@@ -32,8 +32,7 @@ export default function EditPage() {
     const [success, setSuccess] = useState("")
     const [disableSelect, setDisableSelect] = useState(true)
 
-    const [origKey, setOrigKey] = useState("")
-    const [key, setKey] = useState("")
+    const [id, setId] = useState("")
     const [name, setName] = useState("")
     const [title, setTitle] = useState("")
     const [occupation, setOccupation] = useState("")
@@ -104,17 +103,19 @@ export default function EditPage() {
                 } else {
                     setError("")
                     setSuccess("Character updated successfully!")
+                    console.log(data['characters'])
+                    const newId = Object.keys(data['characters'])[0]
+                    delete characterData[id]
 
-                    delete characterData[origKey]
-                    characterData[key] = data['characters'][key]
+                    setId(newId)
+                    characterData[id] = data['characters'][newId]
 
-                    const options = characterOptions.filter(item => item.value != origKey)
-                    const option = {value: key, label: name}
+                    const options = characterOptions.filter(item => item.value != newId)
+                    const option = {value: newId, label: name}
                     options.push(option)
                     options.sort((a, b) => a.value.localeCompare(b.value));
                     setCharacterOptions(options)
                     setCurrCharacter(option)
-                    setOrigKey(key)
                     setDisableSelect(false)
                 }
             })
@@ -123,10 +124,9 @@ export default function EditPage() {
         }
 	}
 
-	const updateCharacter = (charKey, character) => {
-	    setKey(charKey)
-	    setOrigKey(charKey)
-        setCurrCharacter({value: charKey, label: character.name})
+	const updateCharacter = (id, character) => {
+        setCurrCharacter({value: id, label: character.name})
+        setId(id)
         setName(character.name)
         setTitle(character.title ? character.title : "")
         setOccupation(character.occupation ? character.occupation : "")
@@ -158,8 +158,9 @@ export default function EditPage() {
 	}
 
 	const deleteCharacter = async () => {
-	    if (origKey == "") return;
-	    const confirmed = window.confirm("Are you sure you want to delete " + origKey + "?");
+	    console.log(id)
+	    if (id == "") return;
+	    const confirmed = window.confirm("Are you sure you want to delete " + name + "?");
         if (!confirmed) return;
         const response = await fetch('/api/characters/delete', {
             method: 'POST',
@@ -167,7 +168,7 @@ export default function EditPage() {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                key: origKey,
+                id: id,
                 tokenType: tokenType,
                 accessToken: accessToken
             })
@@ -175,12 +176,12 @@ export default function EditPage() {
         .then(async res => {
             if (res.ok) {
                 const data = await res.json()
-                delete characterData[origKey]
+                delete characterData[id]
                 // This is a problem, for some reason. I don't want to find out the source so here we are
                 if (characterData[0]) {
                     delete characterData[0]
                 }
-                const options = characterOptions.filter(item => item.value != origKey)
+                const options = characterOptions.filter(item => item.value != id)
                 setCharacterOptions(options)
                 if (Object.keys(characterData).length > 0) {
                     const currKey = Object.keys(characterData)[0]
@@ -241,7 +242,7 @@ export default function EditPage() {
 
 	const buildFormData = () => {
 	    const formData = new FormData()
-	    formData.append('key', key)
+	    formData.append('id', id)
 	    formData.append('name', name)
 	    formData.append('title', title)
 	    formData.append('occupation', occupation)
@@ -255,7 +256,6 @@ export default function EditPage() {
 	    formData.append('description', description)
 	    formData.append('tokenType', tokenType)
 	    formData.append('accessToken', accessToken)
-	    formData.append('originalKey', origKey)
 	    if (image) { formData.append('image', image) }
 	    return formData
 	}
@@ -322,13 +322,18 @@ export default function EditPage() {
                         isDisabled={disableSelect}
                     />
                 </div>
-                <div className='new-button-row'>
-                    <input className="save-button" type="button" value="New" onClick={() => newCharacter()}/>
+                <div className="message-box">
+                    <p className='error-text'>{error}</p>
+                    <p className='success-text'>{success}</p>
                 </div>
                 <form className="submit-form" onSubmit={handleSubmit}>
+                    <div className='new-button-row'>
+                        <input className="save-button" type="button" value="New" onClick={() => newCharacter()}/>
+                        <input className="save-button" type="submit" value="Save" onSubmit={() => handleSubmit()}/>
+                        <input className="save-button" type="button" value="Delete" onClick={() => deleteCharacter()}/>
+                    </div>
                     <div className='upper-fields'>
                         <div className="field-inputs">
-                            <InputField field="Key *" value={key} valueSetter={setKey} required={true}/>
                             <InputField field="Name *" value={name} valueSetter={setName} required={true}/>
                             <InputField field="Title" value={title} valueSetter={setTitle}/>
                             <InputField field="Occupation" value={occupation} valueSetter={setOccupation}/>
@@ -350,12 +355,6 @@ export default function EditPage() {
                         </div>
                     </div>
                     <BigInputField value={description} valueSetter={setDescription}/>
-                    <p className='error-text'>{error}</p>
-                    <p className='success-text'>{success}</p>
-                    <div className='buttons'>
-                        <input className="save-button" type="submit" value="Save" onSubmit={() => handleSubmit()}/>
-                        <input className="save-button" type="button" value="Delete" onClick={() => deleteCharacter()}/>
-                    </div>
                 </form>
             </div>}
         </div>
