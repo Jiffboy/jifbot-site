@@ -81,7 +81,15 @@ def delete():
     connection = sqlite3.connect(os.getenv('JIFBOT_DB'))
     cursor = connection.cursor()
 
+    target = cursor.execute(f"SELECT UserId FROM Character WHERE Id = ?", (data['id'],))
+    id = target.fetchone()
+
+    if id[0] != int(user_id):
+        return jsonify({"error": "Character does not belong to this user."}), 403
+
     cursor.execute("DELETE FROM Character WHERE Id = ? AND UserId = ?", (data['id'], user_id))
+    cursor.execute("DELETE FROM CharacterTag WHERE Id = ?", (data['id'],))
+    cursor.execute("DELETE FROM CharacterAlias WHERE Id = ?", (data['id'],))
 
     connection.commit()
     connection.close()
